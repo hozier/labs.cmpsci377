@@ -2,21 +2,30 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <signal.h>
+#include <ctype.h>
 
 void process_termination(pid_t pid){ kill(pid, SIGKILL); }
 
 // overview: prompt the user to enter a process id and then
 // use the kill system call to terminate it.
 void interface(){
-  int response = 0;
+  char response;
   // pid_t pid;
+  while (1/* condition */) {
+    /* code */
+    // read a string, if string is an integer, proceed; else exit 
+    printf("%s: ","Enter a process id [options -- an integer | -- a noninteger to exit ]");
+    scanf("%s", &response);
 
-  printf("%s: ","Enter a process id [options -- an integer]");
-  scanf("%d", &response);
-  printf("%s\n\n", "Attempting kill...");
+    if (isdigit(response)/* condition */) {
+      /* code */
+      printf("Killing... %d\n\n", response);
+      pid_t pid = (pid_t)(atoi(&response));
+      process_termination(pid/*some pid from the command line*/);
+    } else { printf("%s\n", "exiting..."); break; }
 
-  pid_t pid = (pid_t)response;
-  process_termination(pid/*some pid from the command line*/);
+  }
+
 }
 
 
