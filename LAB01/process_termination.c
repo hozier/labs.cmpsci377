@@ -4,7 +4,11 @@
 #include <signal.h>
 #include <ctype.h>
 
-void process_termination(pid_t pid){ kill(pid, SIGKILL); }
+// overview: kills process
+void process_termination(pid_t pid){
+  /* if kill is successful */
+  if (kill(pid, SIGKILL) == 0) { printf("Killed... %d\n\n", pid); }
+}
 
 // overview: prompt the user to enter a process id and then
 // use the kill system call to terminate it.
@@ -19,7 +23,6 @@ void interface(){
 
     if (isdigit(response)/* condition */) {
       /* code */
-      printf("Killing... %d\n\n", atoi(&response));
       pid_t pid = (pid_t)(atoi(&response));
       process_termination(pid/*some pid from the command line*/);
     } else { printf("%s\n", "exiting..."); break; }
