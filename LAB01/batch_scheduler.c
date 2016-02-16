@@ -16,8 +16,8 @@ int main(){
     fgets(argStorage,100,stdin);
     /* -fgets reads characters from stdin and stores them in our argStorage up to 99 arguments
         until theres no more
-       -sdin can be used as an argument for any function that expects an input stream.
-        this includes the keyboard in which our shells will be typed. sdin = standard input stream */
+       -stdin can be used as an argument for any function that expects an input stream.
+        this includes the keyboard in which our shells will be typed. stdin = standard input stream */
 
     char* commandStorage[100]; //array to store commands once input is seperated by " "
     char* command; // single command pointer
