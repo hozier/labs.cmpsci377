@@ -7,7 +7,7 @@
 // overview: kills process
 void process_termination(pid_t pid){
   /* if kill is successful print completed, else print unable to find pid */
-  if (kill(pid, SIGKILL) == 0) { printf("[Process %d completed]\n\n", pid); } else{  printf("process id unknown\n\n"); }
+  if (kill(pid, SIGKILL) == 0) { printf("[Process %d completed]\n\n", pid); } else{  printf("process id unknown\n\n"); return; }
 }
 
 // overview: prompt the user to enter a process id and then
@@ -15,16 +15,18 @@ void process_termination(pid_t pid){
 void interface(){
   char response;
   // pid_t pid;
-  printf("%s\n\n","Enter a process id\noptions [-- an integer to represent a pid] [-- any noninteger character to exit ]");
+  printf("%s\n\n","Enter a process id\noptions [-- an integer to represent a pid] [-- any noninteger character | EOF to exit ]");
   while (1/* condition */) {
     /* code */
     // read a string, if string is an integer, proceed; else exit
     printf("%s","process_termination> ");
     scanf("%s", &response);
 
-    if (isdigit(response)/* condition */) {
+    if (isdigit(response) && !feof(stdin)/* condition checks for EOF and if response is a digit*/) {
       /* code */
       pid_t pid = (pid_t)(atoi(&response));
+      // if((int)pid == EOF){break;}
+
       process_termination(pid/*some pid from the command line*/);
     } else { printf("%s\n", "exiting..."); break; }
 
