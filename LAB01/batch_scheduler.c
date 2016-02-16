@@ -45,7 +45,7 @@ int main(){
         int exec = execl(bin,argStorage,NULL); //execl means execute and leave, meaning a process will be executed and then terminated when done
                                                //bin is path where commands stand while argStorage points to commands identical to those in the path
         if(exec < 0){ //if input is incorrect
-              printf("incorrect input\n");
+              printf("Invalid input. To quit, enter \'quit\'.\n");
               exit(0);
         }
       }
