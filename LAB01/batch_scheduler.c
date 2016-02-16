@@ -29,7 +29,8 @@ char** parse_commands(char *argStorage, int *counter){
 
 // overview: append parsed arguments to the current working directory and execute commands.
 void execute_commands(char *argStorage, char **commandStorage, char *bin, int *counter){
-  for(size_t j=0; j<*counter; j++){ //for loop to actually execute all the commands once their seperated
+  size_t j;
+  for(j=0; j<*counter; j++){ //for loop to actually execute all the commands once their seperated
     if(fork()==0){ //if child
       //get command
       strcat(bin, "/");
