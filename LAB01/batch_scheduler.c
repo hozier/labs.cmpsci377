@@ -4,10 +4,11 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <errno.h>
+#define SIZE_LIMIT 100
 
 // overview: parse argurments recieved from stdin and store them into an array of strings.
 char** parse_commands(char *argStorage, int *counter){
-  char** commandStorage = (char**)malloc(100*sizeof(char)); //array to store commands once input is seperated by " "
+  char** commandStorage = (char**)malloc(SIZE_LIMIT*sizeof(char)); //array to store commands once input is seperated by " "
   char* command; // single command pointer
   char current[2] = " "; //used to detect a space in the input and will be used in strtok to seperate commands
 
@@ -50,15 +51,15 @@ void execute_commands(char *argStorage, char **commandStorage, char *bin, int *c
 
 int main(){
   int counter; //initialize counter for index in commandStorage to input different commands once seperated
-  char argStorage[100]; //array to store user's input as arguments
-  char bin[100]; //path
+  char argStorage[SIZE_LIMIT]; //array to store user's input as arguments
+  char bin[SIZE_LIMIT]; //path
   getcwd(bin, sizeof(bin)); //gets current directory, assigns it to bin
   printf("Working directory is: %s\n", bin);
 
   while (1) { //while more arguments exist
     counter = 0;
     printf("batch-shell> ");
-    fgets(argStorage,100,stdin);
+    fgets(argStorage,SIZE_LIMIT,stdin);
     /* -fgets reads characters from stdin and stores them in our argStorage up to 99 arguments
         until theres no more
        -sdin can be used as an argument for any function that expects an input stream.
