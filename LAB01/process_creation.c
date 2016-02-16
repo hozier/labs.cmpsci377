@@ -41,7 +41,6 @@ void child_make_child(){
 
 int main(int argc, char const *argv[]) {
   /* code */
-  pid_t p;
   pid_t process_creation1 = fork();
 
   int status1;
