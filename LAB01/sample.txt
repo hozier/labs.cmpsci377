@@ -1,0 +1,28 @@
+Lappy:LAB01 Ethan$ ./batch_scheduler
+Working directory is: /Users/Ethan/code/cs377/labs.cmpsci377/LAB01
+batch-shell> process_creation
+Command to execute: /Users/Ethan/code/cs377/labs.cmpsci377/LAB01/process_creation
+
+Grandchild process with process id [2234] has completed.
+Child process with process ID [2233] has completed.
+Parent process with process ID [2232] has finished
+batch-shell> process_creation process_termination process_creation
+Command to execute: /Users/Ethan/code/cs377/labs.cmpsci377/LAB01/process_creation
+Grandchild process with process id [2243] has completed.
+Child process with process ID [2242] has completed.
+Parent process with process ID [2241] has finished
+Command to execute: /Users/Ethan/code/cs377/labs.cmpsci377/LAB01/process_termination
+Enter a process id
+options [-- an integer to represent a pid] [-- any noninteger character | EOF to exit ]
+
+process_termination> 9999999999
+process id unknown
+
+process_termination> EOF
+exiting...
+Command to execute: /Users/Ethan/code/cs377/labs.cmpsci377/LAB01/process_creation
+
+Grandchild process with process id [2249] has completed.
+Child process with process ID [2248] has completed.
+Parent process with process ID [2247] has finished
+batch-shell> quit

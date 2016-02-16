@@ -7,7 +7,9 @@
 
 int main(){
   char argStorage[100]; //array to store user's input as arguments
-  char bin[100] = "/bin/"; //path
+  char bin[100]; //path
+  getcwd(bin, sizeof(bin)); //gets current directory, assigns it to bin
+  printf("Working directory is: %s\n", bin);
 
   while (1) { //while more arguments exist
     printf("batch-shell> ");
@@ -39,7 +41,9 @@ int main(){
     for(j=0; j<counter; j++){ //for loop to actually execute all the commands once their seperated
       if(fork()==0){ //if child
         //get command
+		strcat(bin, "/");
         strcat(bin,commandStorage[j]); //strcat appends a copy of the command at index j to path
+		printf("Command to execute: %s\n", bin);
         strtok(bin,"\n"); //delete \n in path
         //execute the command
         int exec = execl(bin,argStorage,NULL); //execl means execute and leave, meaning a process will be executed and then terminated when done

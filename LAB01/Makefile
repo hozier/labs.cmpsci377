@@ -7,4 +7,5 @@ clean:
 	rm batch_scheduler
 	rm process_termination
 	rm process_creation
+	rm -rf *.dSYM
 
