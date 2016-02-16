@@ -18,6 +18,9 @@ options [-- an integer to represent a pid] [-- any noninteger character | EOF to
 process_termination> 9999999999
 process id unknown
 
+process_termination> 8471
+[Process 8471 completed]
+
 process_termination> EOF
 exiting...
 Command to execute: /Users/Ethan/code/cs377/labs.cmpsci377/LAB01/process_creation
