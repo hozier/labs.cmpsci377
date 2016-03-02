@@ -10,7 +10,7 @@
 char** parse_commands(char *argStorage, int *counter){
   char** commandStorage = (char**)malloc(SIZE_LIMIT*sizeof(char)); //array to store commands once input is seperated by " "
   char* command; // single command pointer
-  char current[2] = " "; //used to detect a space in the input and will be used in strtok to seperate commands
+  char* current = " "; //used to detect a space in the input and will be used in strtok to seperate commands
 
   //split commands using the space
   command = strtok(argStorage,current); //split argStorage into commands seperated by 'current' which is a " "
