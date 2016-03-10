@@ -5,6 +5,9 @@
 # be declared within processTrace as it iterates through a file's contents.
 #
 # TODO: implement the actual scheduling part, both RR and FCFS.
+# It's not as simple as just having a queue, because we have to account for
+# job arrival time. We'll need a queue of all the jobs, a system clock, and a queue
+# of jobs that have arrived and are waiting.
 
 require_relative 'job.rb'
 
@@ -25,7 +28,26 @@ class PartOne
     simTime = traceArr[1].to_i
     maxJobLength = traceArr[2].to_i
 
-    #
+    # simulation
+    timer = 0
+    allJobs = Queue.new
+
+    # for each line in the trace file that describes a job, create job object
+    (3..((traceArr.length)-1)).each do |i|
+      str = traceArr[i].split(" ")
+      allJobs.push(Job.new(str[0], str[1]))
+    end
+
+    while(timer < 600) do
+      # TODO: change this, it's just to show that the queue works
+      if(allJobs.empty?)
+        break
+      else
+        currJob = allJobs.pop
+        puts(currJob.getLength)
+        timer+=1
+      end
+    end
 
   end
 
