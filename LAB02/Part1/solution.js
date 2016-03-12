@@ -22,14 +22,22 @@ var read_trace_file = function(file){
     'maximum_lenghth':lines[2],
     }
 
-    var job_array = []
-    var jobs = lines.splice(3,lines.length-1) // start from the third index and process the jobs information within the file
-    jobs.forEach(function(job){
-      var _the_current_job = job.split(' ')
-      job_array.push({'start_time':_the_current_job[0],'job_length':_the_current_job[1]})
-    })
-
-    trace['jobs'] = job_array
+    trace['jobs'] = parse_jobs(lines.splice(3,lines.length-1)) // start from the third index and process the jobs information within the file
     console.log(trace);
   })
 }
+
+// helper function which parses the 'jobs' portions of the .txt files.
+function parse_jobs(jobs){
+  var job_array = []
+  jobs.forEach(function(job){
+    var _the_current_job = job.split(' ')
+
+    if(_the_current_job[0] !== '') // parse only valid strings
+    job_array.push({'start_time':_the_current_job[0],'job_length':_the_current_job[1]})
+  })
+  return job_array;
+}
+
+// file processing has completed.
+// begin scheduling logic below.
