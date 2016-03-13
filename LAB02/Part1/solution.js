@@ -27,7 +27,8 @@ var simulate = function(file, callback){
 
     // once the newly parsed trace file object is returned, pass it to the callback
     // which is a scheduling function
-    callback(parse(lines));
+    // Added a reference to the filename in callback
+    callback(parse(lines), file);
   })
 }
 
@@ -70,9 +71,10 @@ function parse_jobs(jobs){
 
 // file processing has completed.
 // begin scheduling logic below.
-var rr_algorithm = function(trace){
+var rr_algorithm = function(trace, filename){
   console.log(trace);
-  fs.appendFile('t.json'+ Math.floor((Math.random() * 100) + 1), JSON.stringify(trace, null, 2)+"\n\n", function (err){
+  // names the files according to the trace they came from
+  fs.appendFile(filename.split("/").pop().split(".").shift() + '.json', JSON.stringify(trace, null, 2)+"\n\n", function (err){
     if (err) throw err;
     console.log('The "data to append" was appended to file!');
   });
