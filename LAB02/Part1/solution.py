@@ -1,7 +1,7 @@
 import json
 from collections import deque
 
-f = open('t.json', 'r') # <------ replace this json file with one of the randomly generated ones......
+f = open('100-100-8.json', 'r') # <------ replace this json file with one of the randomly generated ones......
 data = json.loads(f.read()) # job now contains a dict of the jobs
 waiting_queue = deque(data['jobs'])
 system_time = int(data['simulation_time'])+1
