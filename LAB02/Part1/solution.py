@@ -9,7 +9,7 @@ def driver():
             rr(f)
 
 def rr(JSON):
-    f = open(JSON, 'r') # <------ replace this json file with one of the randomly generated ones......
+    f = open(JSON, 'r')
     data = json.loads(f.read()) # job now contains a dict of the jobs
 
     def map_key(x):
