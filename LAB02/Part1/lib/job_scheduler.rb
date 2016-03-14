@@ -114,7 +114,6 @@ class JobScheduler
         allJobs.push(Job.new(str[0], str[1]))
       end
 
-      jobIterator = 0
       while(timer <= simTime) do
         unless allJobs.empty?
           nextTime = allJobs[0].getStartTime
@@ -124,12 +123,17 @@ class JobScheduler
         end # end unless
 
         unless currJobs.empty?
-          if(currJobs[0].getTimeLeft == 0)
+          if(currJobs[0].getTimeLeft == 1)
             finishedJobs.push(currJobs.shift)
+            currJobs.each do |job|
+              job.wait
+            end
+          else
+            timeStepRR(currJobs)
           end
         end # end unless
 
-        timeStepRR(currJobs)
+        # timeStepRR(currJobs)
         timer+=1
       end # end while
 
