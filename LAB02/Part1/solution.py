@@ -21,8 +21,8 @@ def rr(JSON):
         return x
 
     waiting_queue = deque([map_key(x) for x in data['jobs']])
-    simulation_time = int(data['simulation_time'])
-    number_of_jobs = int(data['number_of_jobs'])
+    simulation_time = data['simulation_time']
+    number_of_jobs = data['number_of_jobs']
     current_jobs = deque()
     finished_jobs = deque()
 
@@ -32,14 +32,26 @@ def rr(JSON):
 
     while timer <= simulation_time:
         if waiting_queue:
-            jobx_start_time = int( waiting_queue[0]['start_time'] )
+            jobx_start_time = waiting_queue[0]['start_time']
 
             if jobx_start_time == timer:
                 current_jobs.append(waiting_queue.popleft())
+
+                if current_jobs[0]['job_length'] == 0:
+                    finished_jobs.append(current_jobs.popleft())
+                    continue
+
+                current_jobs[0]['job_length'] -= 1
+
+
+                current_jobs.append(current_jobs.popleft())
+                for j in range(1,len(current_jobs)):
+                    current_jobs[j]['wait_time']+=1
                 continue
 
         if len(current_jobs) > 0:
-            job_length = int(current_jobs[0]['job_length'])
+            job_length = current_jobs[0]['job_length']
+            # print "job_length: ", job_length
             if job_length == 0:
                 finished_jobs.append(current_jobs.popleft())
 
@@ -63,6 +75,8 @@ def rr(JSON):
     # print 'number_of_jobs', number_of_jobs
 
     AWT = total_time/float(number_of_jobs)
+    # AWT = total_time/number_of_jobs
+
     print "RR {0}: [{1}]".format(JSON, AWT)
 
 driver()

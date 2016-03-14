@@ -35,9 +35,9 @@ var simulate = function(file, callback){
 // helper functions which parse the 'jobs' as well as other portions of the .txt files.
 function parse(lines){
   var total_time = 0 // total time of all jobs within curr trace file
-  var trace = {'number_of_jobs':lines[0],
-  'simulation_time':lines[1],
-  'maximum_length':lines[2],
+  var trace = {'number_of_jobs':parseInt(lines[0]),
+  'simulation_time':parseInt(lines[1]),
+  'maximum_length':parseInt(lines[2]),
   }
 
   // start from the third index and process the jobs information within the file
@@ -58,11 +58,11 @@ function parse_jobs(jobs){
 
       job_array.push(
         // the time when each CPU burst starts to run
-        {'start_time':_the_current_job[0],
+        {'start_time':parseInt(_the_current_job[0]),
 
         // aka burst time
         // burst time: the amount of time the process uses the processor before it is no longer ready
-        'job_length':_the_current_job[1]
+        'job_length':parseInt(_the_current_job[1])
       })
     }
   })
