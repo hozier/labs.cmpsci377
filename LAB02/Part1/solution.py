@@ -77,7 +77,7 @@ def rr(JSON):
     AWT = total_time/float(number_of_jobs)
     # AWT = total_time/number_of_jobs
 
-    print "RR {0}: [{1}]".format(JSON, AWT)
+    print "RR {0}: [{1}]".format(JSON.split('.')[0], AWT)
 
 driver()
 
