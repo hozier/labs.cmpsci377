@@ -1,4 +1,4 @@
-task :default do
+task :default => [:clean] do
 	ruby "lib/job_scheduler.rb"
 end
 
