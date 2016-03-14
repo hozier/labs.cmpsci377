@@ -8,17 +8,20 @@ def driver():
         if 'json' in f:
             rr(f)
 
+def out(AWT, JSON):
+    solution = "RR {0}: [{1}]".format(JSON.split('.')[0], AWT)
+    f = open("solution.txt", "ab")
+    f.write(solution+"\n")
+    print solution
+    f.close()
+
+def map_key(x):
+    x['wait_time'] = 0
+    return x
+
 def rr(JSON):
     f = open(JSON, 'r')
     data = json.loads(f.read()) # job now contains a dict of the jobs
-
-    def map_key(x):
-        x['wait_time'] = 0
-        return x
-
-    def update_wait_time(x):
-        x['wait_time']+=1
-        return x
 
     waiting_queue = deque([map_key(x) for x in data['jobs']])
     simulation_time = data['simulation_time']
@@ -75,9 +78,7 @@ def rr(JSON):
     # print 'number_of_jobs', number_of_jobs
 
     AWT = total_time/float(number_of_jobs)
-    # AWT = total_time/number_of_jobs
-
-    print "RR {0}: [{1}]".format(JSON.split('.')[0], AWT)
+    out(AWT, JSON)
 
 driver()
 

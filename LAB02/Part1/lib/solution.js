@@ -1,7 +1,8 @@
 
 var fs = require("fs")
-var resources = '/resources/'
-var curr_folder = process.cwd() + resources
+var resources = 'resources/'
+var curr_folder = process.cwd().slice(0, -3)  + resources
+console.log(curr_folder);
 var trace_objects = []
 
 var run = function(callback){
@@ -74,6 +75,7 @@ function parse_jobs(jobs){
 var rr_algorithm = function(trace, filename){
   console.log(trace);
   // names the files according to the trace they came from
+
   fs.appendFile(filename.split("/").pop().split(".").shift() + '.json', JSON.stringify(trace, null, 2)+"\n\n", function (err){
     if (err) throw err;
     console.log('The "data to append" was appended to file!');
