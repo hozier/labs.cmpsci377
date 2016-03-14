@@ -1,3 +1,4 @@
 sh clean.sh
 node solution.js
-python solution.py  
+python solution.py
+ 
