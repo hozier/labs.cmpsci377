@@ -34,6 +34,8 @@ node *new_node(data *d){
   return n;
 }
 
+void down(sem_t *s){ sem_wait(s); }
+
 linked *new_linked(){
   linked *l = (linked *)malloc(sizeof(linked));
   l->counter = 0;
@@ -55,6 +57,28 @@ void add(linked *l, data *d){
   ptr->next = new_node(NULL);
   ptr->request_id = l->counter;
   ++(l->counter); // increments the counter of the queue so that each node can have a unique request_id;
+}
+
+int main(int argc, char const *argv[]) {
+  /* code */
+  linked *queue = new_linked();
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+
+  node *ptr =queue->head;
+  while (ptr !=NULL/* condition */) {
+    /* code */
+    printf("request_id: %d\n", ptr->request_id);
+    ptr = ptr->next;
+  }
+  return 0;
 }
 
 
@@ -87,10 +111,18 @@ void add(linked *l, data *d){
 //   }
 // }
 //
-// int main(){
-//   sem_t mutex;
-//   sem_t fill_count;
-//   sem_t empty_count;
+
+
+// int main(int argc, char const *argv[]) {
+//   /* code */
+//
+//   printf("Enter a Buffer Size\t ")
+//   scanf("%d",&buffer); //read in desired buffer Size
+//   int N = buffer;
+//
+//   printf("Enter Number of Slaves:\t "); //ask for number of slaves
+//   scanf("%d",&num); //read in number of slaves
+//   int slave_number = num; //assign number of slaves to variable
 //
 //   // api: int sem_init(sem_t *sem,
 //   // int pshared [0 for shared between the threads of a process],
@@ -104,38 +136,21 @@ void add(linked *l, data *d){
 //     pthread_attr_t *attr,   //attributes applied to this thread
 //     void *(*listen_request)(void *), //this thread executes listen_request
 //     void *arg);   //arguments to pass to thread function above
+//
+//   //create an array of slave threads
+//   pthread_t slaves[slave_number]; //initialize array of threads for slaves
+//   thread_data slaves_with_id[slave_number]; //initialize array of threads for slaves that will also have an id
+//   int i, rc;
+//   for(i = 0; i <slave_number; ++i){
+//     slaves_with_id[i].id = i; //assign in id to each index
+//     if((rc = pthread_create(&slaves[i],NULL, consumer, &slaves_with_id[i]))){
+//       fprintf(stderr, "error: pthread_create, rc: %d\n",rc);
+//       return EXIT_FAILURE;
+//     }
+//   }
+//   for (i=0;i <slave_number; ++i){
+//     pthread_join(slaves[i], NULL);
+//   }
+//   return EXIT_SUCCESS;
+//
 // }
-//
-// /*
-//  The producer's job is to generate a piece of data, put it into the buffer and start again.
-//  At the same time, the consumer is consuming the data (i.e., removing it from the buffer) one piece at a time.
-//
-//  The problem is to make sure that the producer won't try to add data into the buffer if it's full
-//  and that the consumer won't try to remove data from an empty buffer.
-//
-//  The solution for the producer is to either go to sleep or discard data if the buffer is full.
-//
-// */
-
-int main(int argc, char const *argv[]) {
-  /* code */
-  linked *queue = new_linked();
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-
-  node *ptr =queue->head;
-  while (ptr !=NULL/* condition */) {
-    /* code */
-    printf("request_id: %d\n", ptr->request_id);
-    ptr = ptr->next;
-  }
-  return 0;
-
-}
