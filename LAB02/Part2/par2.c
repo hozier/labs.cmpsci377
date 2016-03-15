@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<pthread.h>
+#include<semaphore.h>
 
 typedef struct node node;
 typedef struct linked linked;
