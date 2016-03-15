@@ -34,7 +34,7 @@ node *new_node(data *d){
   return n;
 }
 
-void down(sem_t *s){ sem_wait(s); }
+//void down(sem_t *s){ sem_wait(s); }
 
 linked *new_linked(){
   linked *l = (linked *)malloc(sizeof(linked));
@@ -43,34 +43,36 @@ linked *new_linked(){
   return l;
 }
 
-void add(linked *l, data *d){
+linked* add(linked *l, data *d){
   node *ptr = l->head;
   if (ptr == NULL/* condition */) {
     /* code */
     l->head = new_node(NULL);
   }
-
-  while (ptr->next != NULL/* condition */) {
+  else{
+    while (ptr->next != NULL/* condition */) {
     /* code */
     ptr = ptr->next;
+    }
+    ptr->next = new_node(NULL);
+    ptr->request_id = l->counter;
+    ++(l->counter); // increments the counter of the queue so that each node can have a unique request_id;
   }
-  ptr->next = new_node(NULL);
-  ptr->request_id = l->counter;
-  ++(l->counter); // increments the counter of the queue so that each node can have a unique request_id;
+  return l;
 }
 
 int main(int argc, char const *argv[]) {
   /* code */
   linked *queue = new_linked();
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
+  queue = add(queue, NULL);
+  queue = add(queue, NULL);
+  queue = add(queue, NULL);
+  queue = add(queue, NULL);
+  queue = add(queue, NULL);
+  queue = add(queue, NULL);
+  queue = add(queue, NULL);
+  queue = add(queue, NULL);
+  queue = add(queue, NULL);
 
   node *ptr =queue->head;
   while (ptr !=NULL/* condition */) {
