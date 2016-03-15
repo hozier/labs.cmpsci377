@@ -20,8 +20,6 @@ struct node{
   return n;
 }
 
-
-
 void down(sem_t *s){ sem_wait(s); }
 
 void up(sem_t *s){ sem_post(s); }

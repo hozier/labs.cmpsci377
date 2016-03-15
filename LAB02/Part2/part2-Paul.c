@@ -41,18 +41,25 @@ int main(in argc, char **argv){
   sem_t num_in_buffer; //number of items already in buffer
   sem_t num_of_avail_spaces; //number of available spaces in buffer
 
-  int pthread_create(pthread_t *master, //actual thread object, master is it's name
-    pthread_attr_t *attr,   //attributes applied to this thread
-    void *(*listen_request)(void *), //this thread executes listen_request
-    void *arg);   //arguments to pass to thread function above
+  printf("Enter a Buffer Size\t ")
+  scanf("%d",&buffer); //read in desired buffer Size
+  int buffer_size = buffer;
 
   printf("Enter Number of Slaves:\t "); //ask for number of slaves
   scanf("%d",&num); //read in number of slaves
   int slave_number = num; //assign number of slaves to variable
 
-  printf("Enter a Buffer Size\t ")
-  scanf("%d",&buffer); //read in desired buffer Size
-  int buffer_size = buffer;
+  // api: int sem_init(sem_t *sem,
+  // int pshared [0 for shared between the threads of a process],
+  // unsigned int value);
+  sem_init(&mutex, 0, 1);
+  sem_init(&num_in_buffer, 0, 0); // items produced
+  sem_init(&num_of_avail_spaces, 0, buffer_size); // remaining space, N == BUFFER_SIZE
+
+  int pthread_create(pthread_t *master, //actual thread object, master is it's name
+    pthread_attr_t *attr,   //attributes applied to this thread
+    void *(*listen_request)(void *), //this thread executes listen_request
+    void *arg);   //arguments to pass to thread function above
 
   pthread_t slaves[slave_number]; //initialize array of threads for slaves
   thread_data slaves_with_id[slave_number]; //initialize array of threads for slaves that will also have an id
@@ -70,12 +77,6 @@ int main(in argc, char **argv){
   return EXIT_SUCCESS;
   }
 
-  // api: int sem_init(sem_t *sem,
-  // int pshared [0 for shared between the threads of a process],
-  // unsigned int value);
-  sem_init(&mutex, 0, 1);
-  sem_init(&num_in_buffer, 0, 0); // items produced
-  sem_init(&num_of_avail_spaces, 0, buffer_size); // remaining space, N == BUFFER_SIZE
 
 
 }
