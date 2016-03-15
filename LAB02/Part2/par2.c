@@ -54,6 +54,14 @@ int main(){
   sem_t fill_count;
   sem_t empty_count;
 
+  printf("Enter a Buffer Size\t ")
+  scanf("%d",&buffer); //read in desired buffer Size
+  int N = buffer;
+
+  printf("Enter Number of Slaves:\t "); //ask for number of slaves
+  scanf("%d",&num); //read in number of slaves
+  int slave_number = num; //assign number of slaves to variable
+
   // api: int sem_init(sem_t *sem,
   // int pshared [0 for shared between the threads of a process],
   // unsigned int value);
@@ -66,6 +74,23 @@ int main(){
     pthread_attr_t *attr,   //attributes applied to this thread
     void *(*listen_request)(void *), //this thread executes listen_request
     void *arg);   //arguments to pass to thread function above
+
+  //create an array of slave threads
+  pthread_t slaves[slave_number]; //initialize array of threads for slaves
+  thread_data slaves_with_id[slave_number]; //initialize array of threads for slaves that will also have an id
+  int i, rc;
+  for(i = 0; i <slave_number; ++i){
+    slaves_with_id[i].id = i; //assign in id to each index
+    if((rc = pthread_create(&slaves[i],NULL, consumer, &slaves_with_id[i]))){
+      fprintf(stderr, "error: pthread_create, rc: %d\n",rc);
+      return EXIT_FAILURE;
+    }
+  }
+  for (i=0;i <slave_number; ++i){
+    pthread_join(slaves[i], NULL);
+  }
+  return EXIT_SUCCESS;
+  }
 }
 
 /*
