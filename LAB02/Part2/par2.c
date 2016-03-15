@@ -1,16 +1,26 @@
 #include<stdio.h>
 #include<pthread.h>
+#include<semaphore.h>
 
-// void listen_request(void *arg){
-//   while(true){
-//     item = produceItem();
-//     down(emptyCount);
-//       down(mutex);
-//         add_to_request_queue(item);
-//       up(mutex);
-//     up(fillCount);
-//   }
-// }
+typedef struct node node;
+typedef struct linked linked;
+
+struct linked{
+  node *head;
+}
+
+struct node{
+  int request_id;
+  node *next;
+  // int
+};
+
+*node new_node(){
+  node *n = (node *)malloc(sizeof(node));
+  return n;
+}
+
+
 
 void down(sem_t *s){ sem_wait(s); }
 
