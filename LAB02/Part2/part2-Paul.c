@@ -45,7 +45,7 @@ int main(in argc, char **argv){
 
   pthread_t slaves[slave_number]; //initialize array of threads for slaves
   thread_data slaves_with_id[slave_number]; //initialize array of threads for slaves that will also have an id
-  int i;
+  int i, rc;
   for(i = 0; i <slave_number; ++i){
     slaves_with_id[i].id = i; //assign in id to each index
     if((rc = pthread_create(&slaves[i],NULL, consumer, &slaves_with_id[i]))){
@@ -53,7 +53,10 @@ int main(in argc, char **argv){
       return EXIT_FAILURE;
     }
   }
-
+  for (i=0;i <slave_number; ++i){
+    pthread_join(slaves[i], NULL);
+  }
+  return EXIT_SUCCESS;
   }
 
 
