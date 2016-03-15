@@ -1,5 +1,5 @@
 rm -rf solution.txt
 sh clean.sh
-node solution.js
+node parsed.js
 python solution.py
 sh clean.sh

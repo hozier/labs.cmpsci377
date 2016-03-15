@@ -2,11 +2,12 @@ import json
 import os
 from collections import deque
 
-def driver():
+def _exec():
     files = [f for f in os.listdir('.') if os.path.isfile(f)]
     for f in files:
         if 'json' in f:
             rr(f)
+            fcfs(f)
 
 def out(AWT, JSON):
     solution = "RR {0}: [{1}]".format(JSON.split('.')[0], AWT)
@@ -19,16 +20,40 @@ def map_key(x):
     x['wait_time'] = 0
     return x
 
+def fcfs(JSON):
+    f = open(JSON, 'r')
+    data = json.loads(f.read()) # data now contains a dict of the jobs
+    waiting_queue = deque([map_key(x) for x in data['jobs']])
+    simulation_time = data['simulation_time']
+    number_of_jobs = data['number_of_jobs']
+    timer = 0
+    count  = 0
+    awt  = 0
+    for job in waiting_queue:
+        # if count == 0:
+        #     job['wait_time'] = timer - 0 # job start time - time taken so far
+        # else:
+        #     job['wait_time'] = timer - job['start_time'] # job start time - time taken so far
+        #
+        # timer += job['job_length']
+        # print 'timer, ', timer
+        # print 'time taken to process job {0} is {1}:'.format(count, job['wait_time'])
+        #  wt[i]=btt-at[i];
+
+        job['wait_time'] = job['job_length'] - job['start_time']
+        awt += job['wait_time']
+        print 'awt so far, ', awt
+    print 'awt, ', awt/number_of_jobs
+        # count += 1
+
 def rr(JSON):
     f = open(JSON, 'r')
-    data = json.loads(f.read()) # job now contains a dict of the jobs
-
+    data = json.loads(f.read()) # data now contains a dict of the jobs
     waiting_queue = deque([map_key(x) for x in data['jobs']])
     simulation_time = data['simulation_time']
     number_of_jobs = data['number_of_jobs']
     current_jobs = deque()
     finished_jobs = deque()
-
     time_slice = 1
     timer = 0
 
@@ -80,7 +105,7 @@ def rr(JSON):
     AWT = total_time/float(number_of_jobs)
     out(AWT, JSON)
 
-driver()
+_exec()
 
 '''the test json'''
 # rr('t.json')
