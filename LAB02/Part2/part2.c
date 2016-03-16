@@ -3,7 +3,7 @@
 #include<semaphore.h>
 #include<stdlib.h>
 #include"queue.h"
-#include "queue.c"
+//#include"queue.c"
 
 typedef struct thread_data{
   int id;
