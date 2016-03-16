@@ -1,7 +1,6 @@
-#include<stdio.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "queue.h"
-#include "queue.c"
 
 // overview: circular queue implementation.
 
@@ -126,51 +125,51 @@ node *pop(linked *l){
 }
 
 // overview: testing expected behavior of queue.
-int main(int argc, char const *argv[]) {
-  /* code */
-  linked *queue = new_linked(10);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  pop(queue);
-  pop(queue);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  pop(queue);
-  pop(queue);
-  add(queue, NULL);
-  add(queue, NULL);
-  pop(queue);
-  add(queue, NULL);
-  add(queue, NULL);
-  // add(queue, NULL);
-  // add(queue, NULL);
-  // add(queue, NULL);
-  add(queue, NULL);
-  // pop(queue);
-  // add(queue, NULL);
-  // add(queue, NULL);
-  // add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-  add(queue, NULL);
-
-  node *ptr =queue->head;
-  while (ptr !=NULL/* condition */) {
-    /* code */
-    printf("request_id: %d\n", ptr->request_id);
-    ptr = ptr->next;
-  }
-  printf("queue size: %d\n", queue->counter);
-  return 0;
-}
+// int main(int argc, char const *argv[]) {
+//   /* code */
+//   linked *queue = new_linked(10);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   pop(queue);
+//   pop(queue);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   pop(queue);
+//   pop(queue);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   pop(queue);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   // add(queue, NULL);
+//   // add(queue, NULL);
+//   // add(queue, NULL);
+//   add(queue, NULL);
+//   // pop(queue);
+//   // add(queue, NULL);
+//   // add(queue, NULL);
+//   // add(queue, NULL);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//   add(queue, NULL);
+//
+//   node *ptr =queue->head;
+//   while (ptr !=NULL/* condition */) {
+//     /* code */
+//     printf("request_id: %d\n", ptr->request_id);
+//     ptr = ptr->next;
+//   }
+//   printf("queue size: %d\n", queue->counter);
+//   return 0;
+// }
