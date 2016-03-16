@@ -13,14 +13,16 @@ class Solution:
         self.number_of_jobs = data['number_of_jobs']
         self.data = data
 
-    def _exec(self):
-        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+    def select_algorithm(self, files, algorithm):
         for f in files:
             if 'json' in f:
                 self.initialize_variables(f)
-                self.rr(f)
-                self.initialize_variables(f)
-                self.fcfs(f)
+                algorithm(f)
+
+    def _exec(self):
+        files = [f for f in os.listdir('.') if os.path.isfile(f)]
+        self.select_algorithm(files, self.rr)
+        self.select_algorithm(files, self.fcfs)
 
     def out(self, algorithm, AWT, JSON):
         solution = "{0} {1}: [{2}]".format(algorithm, JSON.split('.')[0], AWT)
