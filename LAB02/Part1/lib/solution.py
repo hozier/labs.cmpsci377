@@ -20,7 +20,8 @@ class Solution:
             if 'json' in f:
                 self.initialize_variables(f)
                 self.rr(f)
-                # self.fcfs(f)
+                self.initialize_variables(f)
+                self.fcfs(f)
 
     def out(self, algorithm, AWT, JSON):
         solution = "{0} {1}: [{2}]".format(algorithm, JSON.split('.')[0], AWT)
@@ -33,52 +34,36 @@ class Solution:
         x['wait_time'] = 0
         return x
 
-    # def fcfs(self, JSON):
-    #
-    #     simulation_time = data['simulation_time']
-    #     number_of_jobs = data['number_of_jobs']
-    #     timer = 0
-    #     count  = 0
-    #     awt  = 0
-    #     for job in waiting_queue:
-    #         pass
-            # if count == 0:
-            #     job['wait_time'] = timer - 0 # job start time - time taken so far
-            # else:
-            #     job['wait_time'] = timer - job['start_time'] # job start time - time taken so far
-            #
-            # timer += job['job_length']
-            # print 'timer, ', timer
-            # print 'time taken to process job {0} is {1}:'.format(count, job['wait_time'])
-            #  wt[i]=btt-at[i];
-            # count += 1
+    def fcfs(self, JSON):
+        waiting_queue = self.waiting_queue
+        finished_jobs = deque()
+        processing_time = 0
+        timer = 0
 
-    # for(Job job:jobList){
-    #             if(count==0){
-    #                 job.processArrivalTime = job.getArrivalTime();
-    #                 job.ProcessCompletionTime = job.getArrivalTime()+job.getCpuTime();
-    #                 }else{
-    #                 job.processArrivalTime = temp-job.getArrivalTime();
-    #                 job.ProcessCompletionTime = temp+job.getCpuTime();
-    #             }
-    #
-    #             temp = job.ProcessCompletionTime;
-    #             job.turnAroundTime = temp-job.getArrivalTime();
-    #             job.waitingTime = job.turnAroundTime-job.getCpuTime();
-    #             count++;
-    #
-    #             avgWaitingTime =  avgWaitingTime+job.waitingTime;
-    #             avgTurnAroundTime = avgTurnAroundTime+job.turnAroundTime;
-    #             System.out.println("   "+job.getProcessId()+"  | "+"   "+job.turnAroundTime+"  | "+"   "+job.waitingTime+" ");
-    #             System.out.println("----------------------------------------");
-    #         }
+        while waiting_queue:
+            current_job = waiting_queue.popleft()
+            # print 'wait_time = processing_time[{0}] - start_time[{1}]'.format(processing_time, current_job['start_time'])
+            current_job['wait_time'] = processing_time - current_job['start_time']
+            processing_time += current_job['job_length'] # last thing to do.
+            finished_jobs.append(current_job)
+
+        total_time = 0
+        for job in finished_jobs:
+            total_time += job['wait_time']
+
+        AWT = total_time/float(self.number_of_jobs)
+        self.out('FCFS', AWT, JSON)
+
+
     def rr(self, JSON):
         waiting_queue = self.waiting_queue
         current_jobs = deque()
         finished_jobs = deque()
         timer = 0
 
-        while timer <= self.simulation_time:
+        # while timer <= self.simulation_time:
+        while True:
+            # print 'current_jobs len: ', len(current_jobs)
             if waiting_queue:
                 jobx_start_time = waiting_queue[0]['start_time']
 
@@ -112,6 +97,10 @@ class Solution:
                         current_jobs[j]['wait_time']+=1
 
                     current_jobs.append(current_jobs.popleft())
+
+            if len(current_jobs) == 0 and len(waiting_queue) == 0:
+                # print 'timer: ', timer
+                break;
             timer += 1
 
         ''' end while loop '''
@@ -126,6 +115,3 @@ class Solution:
         self.out('RR', AWT, JSON)
 
 Solution()._exec()
-
-'''the test json'''
-# rr('t.json')
