@@ -3,6 +3,7 @@
 #include<semaphore.h>
 #include<stdlib.h>
 #include"queue.h"
+#include "queue.c"
 
 typedef struct thread_data{
   int id;
@@ -67,13 +68,6 @@ int main(int argc, char const *argv[]) {
 
   queue = new_linked(N);
 
-  // overview: master executes listen.
-  // int pthread_create(pthread_t *master, //actual thread object, master is it's name
-  //   pthread_attr_t *attr,   //attributes applied to this thread
-  //   void *(*listen_request)(void *), //this thread executes listen_request
-  //   void *arg);   //arguments to pass to thread function above
-
-  //int res0 = pthread_create(&master, NULL, void *(*producer)(void *), void *arg);
   res0 = pthread_create(&master, NULL, (void *)producer, (void *) "");
   //create an array of slave threads
   pthread_t slaves[slave_number]; //initialize array of threads for slaves
