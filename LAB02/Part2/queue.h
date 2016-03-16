@@ -21,6 +21,7 @@ struct linked{
   int r_id;
   int counter; // counts how many requests have ever been sent to queue
   int N; // size of queue
+  int offset_count;
 };
 
 // overview: allocation functions

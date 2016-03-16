@@ -20,6 +20,7 @@ linked *new_linked(int N){
   linked *l = (linked *)malloc(sizeof(linked));
   l->r_id = 0;
   l->counter = 0;
+  l->offset_count = 0;
   l->head = NULL;
   l->N = N;
   return l;
@@ -57,10 +58,11 @@ void add(linked *l, data *d){
   // if we have reached the limit of our bounded queue, then wrap around...
   // and compute offset.
   if(l->counter >= l->N){
-    int offset = (l->counter) % l->N; // cycle through this many elements in the queue (beginning at the head) -- and insert at this position.
+    l->offset_count = (l->offset_count == l->N)?0:l->offset_count; // reset if offset_count is >= N..
+    int offset = ((l->counter) % l->N) +  l->offset_count; // cycle through this many elements in the queue (beginning at the head) -- and insert at this position.
     int i = 0;
     node *prev = l->head;
-    printf("offset: %d\n", offset);
+    printf("offset count: %d\n", l->offset_count);
 
     if(offset == 0){
       l->head = new_node();
@@ -68,7 +70,7 @@ void add(linked *l, data *d){
       l->head->request_id = l->r_id;
       l->head->next = ptr->next;
       ++(l->r_id); // increments the r_id of the queue so that each node can have a unique request_id;
-      // ++(l->counter); // increments the current number of requests in the queue
+      ++(l->offset_count);
       return;
     }
 
@@ -80,9 +82,14 @@ void add(linked *l, data *d){
       ++i;
     }
 
-    node *temp = ptr;
-    init_new_node(prev, l, d);
+    node *temp = prev->next->next;
+    prev->next = new_node();
+    prev->data = d;
+    prev->request_id = l->r_id;
+    ++(l->r_id); // increments the r_id of the queue so that each node can have a unique request_id;
+    // init_new_node(prev, l, d);
     prev->next->next = temp;
+    ++(l->offset_count);
     return;
   }
 
@@ -131,6 +138,8 @@ int main(int argc, char const *argv[]) {
   add(queue, NULL);
   add(queue, NULL);
   add(queue, NULL);
+  add(queue, NULL);
+
 
 
   node *ptr =queue->head;
