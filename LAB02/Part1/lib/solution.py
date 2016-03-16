@@ -1,5 +1,4 @@
-import json
-import os
+import os, math, json
 from collections import deque
 
 class Solution:
@@ -51,7 +50,7 @@ class Solution:
         for job in finished_jobs:
             total_time += job['wait_time']
 
-        AWT = total_time/float(self.number_of_jobs)
+        AWT = int(math.ceil(total_time/float(self.number_of_jobs)))
         self.out('FCFS', AWT, JSON)
 
 
@@ -111,7 +110,7 @@ class Solution:
         # print 'total_time, ', total_time
         # print 'number_of_jobs', number_of_jobs
 
-        AWT = total_time/float(self.number_of_jobs)
+        AWT = int(math.ceil(total_time/float(self.number_of_jobs)))
         self.out('RR', AWT, JSON)
 
 Solution()._exec()
