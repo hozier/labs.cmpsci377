@@ -18,7 +18,9 @@ struct data{
 
 struct linked{
   node *head;
-  int counter;
+  int r_id;
+  int counter; // counts how many requests have ever been sent to queue
+  int N; // size of queue
 };
 
 // overview: allocation functions
