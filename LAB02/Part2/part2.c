@@ -6,6 +6,7 @@
 
 typedef struct thread_data{
   int id;
+  char* status[];
 } thread_data;
 
 sem_t mutex;
@@ -16,15 +17,11 @@ pthread_t master;
 //pthread_t slaves[];
 int res0;
 
-
-//void down(sem_t *s){ sem_wait(s); }
-//void up(sem_t *s){ sem_post(s); }
-
 // overview: (producer) function which is executed by master thread
 void producer(){
   while (1) {
     /* code */
-    data item = produceItem();
+    //data *item = produceItem();
     sem_wait(&empty_count);
       sem_wait(&mutex);
         add_to_request_queue(queue, item);
@@ -35,14 +32,21 @@ void producer(){
 
 void consumer(){
   while(1){
-    sem_wait(&fill_count); //wait until theres an item
+    sem_wait(&fill_count); //wait until theres a new request
       sem_wait(&mutex); //get access to buffer
         node* request = pop(queue);
       sem_post(&mutex); //release buffer for access for someone else
     sem_post(&empty_count); //one more free slot
-    //consume(request);
+    consume(request);
   }
 }
+
+void consume(node* request){
+  int duration = request->data->additional_data;
+  sleep(duration);
+}
+
+
 
 
 int main(int argc, char const *argv[]) {
@@ -81,10 +85,6 @@ int main(int argc, char const *argv[]) {
   int i, rc;
   for(i = 0; i <slave_number; ++i){
     slaves_with_id[i].id = i; //assign in id to each index
-    // if((rc = pthread_create(&slaves[i],NULL, consumer, &slaves_with_id[i]))){
-    //   fprintf(stderr, "error: pthread_create, rc: %d\n",rc);
-    //   return EXIT_FAILURE;
-    // }
     rc = pthread_create(&slaves[i],NULL, (void*)consumer, &slaves_with_id[i]);
   }
   // for (i=0;i <slave_number; ++i){
