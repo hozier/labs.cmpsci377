@@ -57,7 +57,7 @@ void add(linked *l, data *d){
   // if we have reached the limit of our bounded queue, then wrap around...
   // and compute offset.
   if(l->counter >= l->N){
-    l->offset_count = (l->offset_count == l->N-1)?0:l->offset_count; // reset if offset_count is >= N..
+    l->offset_count = (l->offset_count == l->N)?0:l->offset_count; // reset if offset_count is >= N..
     // printf("if (offset_count[%d]) == (N[%d])\n", l->offset_count, l->N);
     int offset = ((l->counter) % l->N) +  l->offset_count; // cycle through this many elements in the queue (beginning at the head) -- and insert at this position.
     printf("offset_count: %d\n", l->offset_count);
@@ -110,6 +110,7 @@ node *pop(linked *l){
   if (l->head->next == NULL){
     node *n = l->head;
     l->head = NULL;
+    (l->offset_count>0)?--(l->offset_count):0;
     --(l->counter); // decrements the current number of requests in the queue
     return n;
   }
@@ -118,54 +119,57 @@ node *pop(linked *l){
     l->head = NULL;
     l->head = n->next;
     --(l->counter); // decrements the current number of requests in the queue
+    (l->offset_count>0)?--(l->offset_count):0;
     return n;
   }
 }
 
 // overview: testing expected behavior of queue.
-// int main(int argc, char const *argv[]) {
-//   /* code */
-//   linked *queue = new_linked(10);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   pop(queue);
-//   pop(queue);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   pop(queue);
-//   pop(queue);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   pop(queue);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//   add(queue, NULL);
-//
-//   node *ptr =queue->head;
-//   while (ptr !=NULL/* condition */) {
-//     /* code */
-//     printf("request_id: %d\n", ptr->request_id);
-//     ptr = ptr->next;
-//   }
-//   printf("queue size: %d\n", queue->counter);
-//   return 0;
-// }
+int main(int argc, char const *argv[]) {
+  /* code */
+  linked *queue = new_linked(10);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  pop(queue);
+  pop(queue);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  pop(queue);
+  pop(queue);
+  add(queue, NULL);
+  add(queue, NULL);
+  pop(queue);
+  add(queue, NULL);
+  add(queue, NULL);
+  // add(queue, NULL);
+  // add(queue, NULL);
+  // add(queue, NULL);
+  add(queue, NULL);
+  // pop(queue);
+  // add(queue, NULL);
+  // add(queue, NULL);
+  // add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+  add(queue, NULL);
+
+  node *ptr =queue->head;
+  while (ptr !=NULL/* condition */) {
+    /* code */
+    printf("request_id: %d\n", ptr->request_id);
+    ptr = ptr->next;
+  }
+  printf("queue size: %d\n", queue->counter);
+  return 0;
+}
