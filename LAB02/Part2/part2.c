@@ -1,8 +1,8 @@
 #include<stdio.h>
 #include<pthread.h>
 #include<semaphore.h>
-#include <stdlib.h>
-#include "queue.h"
+#include<stdlib.h>
+#include"queue.h"
 
 typedef struct thread_data{
   int id;
@@ -16,15 +16,17 @@ linked *queue;
 pthread_t master;
 //pthread_t slaves[];
 int res0;
+data *new_request;
+node *request;
 
 // overview: (producer) function which is executed by master thread
 void producer(){
   while (1) {
     /* code */
-    //data *item = produceItem();
+    new_request = new_data(5);
     sem_wait(&empty_count);
       sem_wait(&mutex);
-        add_to_request_queue(queue, item);
+        add(queue, new_request);
       sem_post(&mutex);
     sem_post(&fill_count);
   }
@@ -34,19 +36,13 @@ void consumer(){
   while(1){
     sem_wait(&fill_count); //wait until theres a new request
       sem_wait(&mutex); //get access to buffer
-        node* request = pop(queue);
+          request = pop(queue);
       sem_post(&mutex); //release buffer for access for someone else
     sem_post(&empty_count); //one more free slot
-    consume(request);
+    int duration = request->data->additional_data;
+    sleep(duration);
   }
 }
-
-void consume(node* request){
-  int duration = request->data->additional_data;
-  sleep(duration);
-}
-
-
 
 
 int main(int argc, char const *argv[]) {
@@ -87,9 +83,9 @@ int main(int argc, char const *argv[]) {
     slaves_with_id[i].id = i; //assign in id to each index
     rc = pthread_create(&slaves[i],NULL, (void*)consumer, &slaves_with_id[i]);
   }
-  // for (i=0;i <slave_number; ++i){
-  //   pthread_join(slaves[i], NULL);
-  // }
+  pthread_join(master, NULL);
+  for (i=0;i <slave_number; ++i){
+    pthread_join(slaves[i], NULL);
+  }
   return 0;
-
 }
