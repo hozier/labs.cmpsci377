@@ -46,8 +46,7 @@ void init_new_queue(linked *l, data* d){
 }
 
 
-
-// overview: add to tail of queue
+// overview: add to tail of (circular) queue
 void add(linked *l, data *d){
   node *ptr = l->head;
   if (l->head == NULL/* condition */) {
@@ -59,37 +58,44 @@ void add(linked *l, data *d){
   // and compute offset.
   if(l->counter >= l->N){
     l->offset_count = (l->offset_count == l->N)?0:l->offset_count; // reset if offset_count is >= N..
+    // printf("if (offset_count[%d]) == (N[%d])\n", l->offset_count, l->N);
     int offset = ((l->counter) % l->N) +  l->offset_count; // cycle through this many elements in the queue (beginning at the head) -- and insert at this position.
+    printf("offset_count: %d\n", l->offset_count);
+
     int i = 0;
     node *prev = l->head;
-    printf("offset count: %d\n", l->offset_count);
+    // printf("offset count: %d\n", l->offset_count);
 
     if(offset == 0){
       l->head = new_node();
       l->head->data = d;
       l->head->request_id = l->r_id;
       l->head->next = ptr->next;
+      printf("node *prev = l->head: %d\n", l->head->request_id);
+
       ++(l->r_id); // increments the r_id of the queue so that each node can have a unique request_id;
       ++(l->offset_count);
       return;
     }
 
-    while (i < offset) {
+    while (i <= offset) {
       /* code */
       prev = ptr;
       ptr = ptr->next;
-      printf("this is i: %d\n", i);
       ++i;
     }
 
-    node *temp = prev->next->next;
+
+    node *temp = ptr;
     prev->next = new_node();
     prev->data = d;
     prev->request_id = l->r_id;
     ++(l->r_id); // increments the r_id of the queue so that each node can have a unique request_id;
-    // init_new_node(prev, l, d);
-    prev->next->next = temp;
+    if(temp == NULL){ prev->next->next = temp;}
+    else{ prev->next->next = temp->next; }
+
     ++(l->offset_count);
+
     return;
   }
 
@@ -111,6 +117,7 @@ node *pop(linked *l){
   }
   else{
     node *n = l->head;
+    l->head = NULL;
     l->head = n->next;
     --(l->counter); // decrements the current number of requests in the queue
     return n;
@@ -138,9 +145,13 @@ int main(int argc, char const *argv[]) {
   add(queue, NULL);
   add(queue, NULL);
   add(queue, NULL);
-  add(queue, NULL);
-
-
+  // add(queue, NULL);
+  // add(queue, NULL);
+  // add(queue, NULL);
+  // add(queue, NULL);
+  // add(queue, NULL);
+  // add(queue, NULL);
+  // add(queue, NULL);
 
   node *ptr =queue->head;
   while (ptr !=NULL/* condition */) {
