@@ -2,6 +2,7 @@
 #include<pthread.h>
 #include<semaphore.h>
 #include<stdlib.h>
+#include<unistd.h>
 #include"queue.h"
 //#include"queue.c"
 
@@ -25,7 +26,7 @@ void producer(){
   while (1) {
     /* code */
     new_request = new_data(5);
-    sem_wait(&empty_count);
+    res0 = sem_wait(&empty_count);
       sem_wait(&mutex);
         add(queue, new_request);
       sem_post(&mutex);
@@ -72,10 +73,10 @@ int main(int argc, char const *argv[]) {
   //create an array of slave threads
   pthread_t slaves[slave_number]; //initialize array of threads for slaves
   thread_data slaves_with_id[slave_number]; //initialize array of threads for slaves that will also have an id
-  int i, rc;
+  int i;
   for(i = 0; i <slave_number; ++i){
     slaves_with_id[i].id = i; //assign in id to each index
-    rc = pthread_create(&slaves[i],NULL, (void*)consumer, &slaves_with_id[i]);
+    pthread_create(&slaves[i],NULL, (void*)consumer, &slaves_with_id[i]);
   }
   pthread_join(master, NULL);
   for (i=0;i <slave_number; ++i){
