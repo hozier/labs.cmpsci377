@@ -5,8 +5,10 @@
 // overview: circular queue implementation.
 
 // overview: allocation functions
-data *new_data(int additional_data){
+data *new_data(int additional_data, int request_length){
   data *d = (data *)malloc(sizeof(data));
+  d->id = additional_data;
+  d->length = request_length;
   return d;
 }
 
