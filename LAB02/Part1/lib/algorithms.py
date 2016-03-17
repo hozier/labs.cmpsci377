@@ -12,7 +12,6 @@ class Solution:
 
     '''
     overview: continue the initialization of global class variables
-    @params: f: an open file object
     returns void
     '''
     def initialize_variables(self):
