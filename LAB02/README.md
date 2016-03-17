@@ -2,6 +2,13 @@
 
 
 DIRECTIONS:
+Part1
+**be in ~/LAB02/Part1/lib
+To run, enter node solution.js on the command line.
+Dependencies include Node.js (v0.12.5) and Python (2.7). 
+Tested both under Windows 10 (using Cygwin) and *NIX (Mac OS X 10.11.2)
+
+Part2
 once the program is run, it will ask the user for the following input..
  -buffer size (for job requests)
  -number of slaves (consumers)
