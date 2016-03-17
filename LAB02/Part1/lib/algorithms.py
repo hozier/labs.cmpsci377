@@ -29,7 +29,7 @@ class Solution:
     @params: s: the simulation_time field of the data json
     @params: n: the number_of_jobs field of the data json
     @params: d: the json read in from solution.js. the jobs
-    listed in a tracefile is stored here.
+    listed in a tracefile are stored here.
     returns void
     '''
     def map_init(self, s, n, d):
