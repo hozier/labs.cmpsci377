@@ -13,7 +13,8 @@ struct node{
 };
 
 struct data{
-  int additional_data;
+  int id;
+  int length;
 };
 
 struct linked{
@@ -29,7 +30,7 @@ node *new_node();
 
 linked *new_linked();
 
-data *new_data(int additional_data);
+data *new_data(int additional_data, int request_length);
 
 
 // overview: add to tail of queue
