@@ -30,12 +30,12 @@ node *request;
 void producer(){
   printf("im a producer\n");
   while (1) {
-    random_length = rand() % request_max_length; //assign random job length
-    new_request = new_data(request_id, random_length); //create new data using job id and length
-    printf("Producer: produced request ID: %d , length: %d seconds\n", request_id, random_length);
-    request_id = request_id + 1; //increment request id so next one is different
     sem_wait(&empty_count); //wait for available space
       sem_wait(&mutex); //grab mutex, blocking other threads
+        random_length = rand() % request_max_length; //assign random job length
+        new_request = new_data(request_id, random_length); //create new data using job id and length
+        printf("Producer: produced request ID: %d , length: %d seconds\n", request_id, random_length);
+        request_id = request_id + 1; //increment request id so next one is different
         add(queue, new_request); //add new request to queue
       sem_post(&mutex); //release mutex
     sem_post(&fill_count); //signal that theres a job available
