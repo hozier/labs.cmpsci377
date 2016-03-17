@@ -1,7 +1,6 @@
 var fs = require("fs") // file system object
-var resources = 'resources/' // a
-var curr_folder = process.cwd().slice(0, -3)  + resources
-var trace_objects = []
+var resources = 'resources/' // a string used to append to a substring of the cwd path
+var curr_folder = process.cwd().slice(0, -3)  + resources // a substring of the cwd path
 
 // package module for external/modular/future use.
 module.exports = {
@@ -11,6 +10,7 @@ module.exports = {
     an array of strings of trace filename paths
 
     @params: callback: function which recieves the returned array of strings
+    returns an array of files in the cwd to callback
   */
 
   exec:
@@ -29,6 +29,7 @@ module.exports = {
     @params: file: path to a trace .txt file
     @params: callback: function which recieves the parsed trace and writes
     a new .json file to the cwd.
+    returns a generated json and path to a trace .txt file to callback
   */
 
   construct_json:
@@ -47,6 +48,7 @@ module.exports = {
 
     @params: lines: an array of strings obtained by a trace file
     split by the new line char.
+    returns a json containing parsed contents of the .txt file
   */
 
   parse:
@@ -73,6 +75,7 @@ module.exports = {
     @params: lines: an array of strings obtained by a trace file
     split by the new line char and which only contain arrival time and
     job length data.
+    returns an array of job jsons
   */
 
   parse_jobs:
@@ -104,6 +107,7 @@ module.exports = {
     @params: trace: the generated json
     @params: filename: the full path of the original trace file which
     has just been parsed.
+    returns void
   */
 
   write:

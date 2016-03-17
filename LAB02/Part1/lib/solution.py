@@ -5,18 +5,20 @@ class Solution:
 
     ''' overview: initialize global class variable '''
     def __init__(self):
-        self.time_slice = 1
+        self.time_slice = 1 # time quantum variable
 
 
     '''
     overview: continue the initialization of global class variables
     @params: f: an open file object
+    returns void
     '''
     def initialize_variables(self, f):
         f = open(f, 'r')
-        data = json.loads(f.read()) # data now contains a dict of the jobs
+        data = json.loads(f.read()) # data now contains a dictionary (json) of the jobs
 
-        #maps the key 'wait_time' into the waiting_queue structure
+        # maps the key 'wait_time' into the waiting_queue structure
+        # used as the starting point queue where all jobs initially reside
         self.waiting_queue = deque([self.map_key(x) for x in data['jobs']])
         self.map_init("simulation_time", "number_of_jobs", data)
 
@@ -25,7 +27,9 @@ class Solution:
     overview: continue the initialization of global class variables
     @params: s: the simulation_time field of the data json
     @params: n: the number_of_jobs field of the data json
-    @params: d: the json read in from the .json file
+    @params: d: the json read in from the .json file. the jobs
+    listed in the tracefiles are stored here.
+    returns void
     '''
     def map_init(self, s, n, d):
         self.s = d[s]
@@ -37,6 +41,7 @@ class Solution:
     overview: apply an algorithm -- either rr or fcfs to the json: f
     @params: files: list of files in the cwd
     @params: algorithm: a callback function
+    returns a json file to callback if condition is true
     '''
     def select_algorithm(self, files, algorithm):
         for f in files:
@@ -45,7 +50,10 @@ class Solution:
                 algorithm(f)
 
 
-    ''' overview: executes the solution script '''
+    '''
+    overview: executes the solution script
+    returns void
+    '''
     def _exec(self):
         # returns a list of all files in the cwd
         files = [f for f in os.listdir('.') if os.path.isfile(f)]
@@ -59,6 +67,7 @@ class Solution:
     @params: algorithm: denotes either RR of FCFS
     @params: AWT: denotes the average wait time number
     @params: JSON: denotes the name of the trace
+    returns void
     '''
     def out(self, algorithm, AWT, JSON):
         solution = "{0} {1}: [{2}]".format(algorithm, JSON.split('.')[0], AWT)
@@ -72,6 +81,7 @@ class Solution:
     overview: inserts the key 'wait_time' and value 0 into the read in json
     (this helper function maps this key/value pair to all jobs in the data json)
     @params: x: an individual job json
+    returns void
     '''
     def map_key(self, x):
         x['wait_time'] = 0
@@ -81,11 +91,12 @@ class Solution:
     '''
     overview: the first come first serve algorithm implementation
     @param: trace_name: the name of the current trace file
+    returns AWT solution to the file writing method
     '''
     def fcfs(self, trace_name):
         waiting_queue = self.waiting_queue
-        finished_jobs = deque()
-        processing_time = 0
+        finished_jobs = deque() # a queue which contains all the finished jobs
+        processing_time = 0 # the running sum of the duration of time it takes for all jobs to complete
 
         while waiting_queue:
             current_job = waiting_queue.popleft()
@@ -111,6 +122,7 @@ class Solution:
     '''
     overview: the round robin algorithm implementation
     @param: trace_name: the name of the current trace file
+    returns AWT solution to the file writing method
     '''
     def rr(self, trace_name):
         waiting_queue = self.waiting_queue
