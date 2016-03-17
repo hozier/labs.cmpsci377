@@ -44,24 +44,25 @@ void producer(){
   }
 }
 
-void consumer(){
+void consumer(void *arg){
   while(1){
     sem_wait(&fill_count); //wait until theres a new request
       sem_wait(&mutex); //get access to buffer
           request = pop(queue);
       sem_post(&mutex); //release buffer for access for someone else
     sem_post(&empty_count); //one more free slot
-    int duration = request->data->length;
-    int re_id = request->data->id;
-    printf("Consumer %d: assigned request ID: %d , processing request for next %d seconds\n",1, re_id, duration);
-    sleep(duration);
-    printf("Consumer %d:completed request ID: %d \n", 1 , re_id);
+    int duration = request->data->length; //get duration of job
+    int re_id = request->data->id; //get id of job
+    thread_data *data = (thread_data *)arg; //get this threads data
+    int thread_id = data->id; //get this threads id
+    printf("Consumer %d: assigned request ID: %d , processing request for next %d seconds\n",thread_id, re_id, duration);
+    sleep(duration); //simulate the time it takes to consume the request
+    printf("Consumer %d:completed request ID: %d \n", thread_id , re_id);
   }
 }
 
 
 int main(int argc, char const *argv[]) {
-  /* code */
 
   int buffer;
   printf("Enter a Buffer Size\t ");
@@ -94,18 +95,14 @@ int main(int argc, char const *argv[]) {
   //create an array of slave threads
   pthread_t slaves[slave_number]; //initialize array of threads for slaves
   thread_data slaves_with_id[slave_number]; //initialize array of threads for slaves that will also have an id
-  int i=0;
-  slaves_with_id[i].id = i; //assign in id to each index
-  pthread_create(&slaves[i],NULL, (void*)consumer, &slaves_with_id[i]);
-  // for(i = 0; i <slave_number; ++i){
-  //   slaves_with_id[i].id = i; //assign in id to each index
-  //   pthread_create(&slaves[i],NULL, (void*)consumer, &slaves_with_id[i]);
-  // }
-  //printf("hey1");
-  pthread_join(master, NULL);
-  //for (i=0;i <slave_number; ++i){
-  pthread_join(slaves[i], NULL);
-  //}
-  //printf("hey");*/
+  int i;
+  for(i = 0; i <slave_number; ++i){
+     slaves_with_id[i].id = i; //assign in id to each index
+     pthread_create(&slaves[i],NULL, (void*)consumer, &slaves_with_id[i]);
+  }
+  pthread_join(master, NULL); //activate master thread
+  for (i=0;i <slave_number; ++i){
+    pthread_join(slaves[i], NULL);
+  } //activate slave threads
   return 0;
 }
