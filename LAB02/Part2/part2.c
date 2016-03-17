@@ -25,7 +25,6 @@ node *request;
 
 // overview: (producer) function which is executed by master thread
 void producer(){
-  printf("im a producer\n");
   while (1) {
     sem_wait(&empty_count); //wait for available space
       sem_wait(&mutex); //grab mutex, blocking other threads
