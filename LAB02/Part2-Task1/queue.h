@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include <stdlib.h>
 
-// overview: implemented data structures
+// overview: implemented data structures below:
 typedef struct node node;
 typedef struct data data;
 typedef struct linked linked;
@@ -25,13 +25,14 @@ struct linked{
   int offset_count;
 };
 
-// overview: allocation functions
+// overview: memory allocation function
 node *new_node();
 
+// overview: memory allocation function
 linked *new_linked();
 
+// overview: memory allocation function
 data *new_data(int additional_data, int request_length);
-
 
 // overview: add to tail of queue
 void add(linked *l, data *d);

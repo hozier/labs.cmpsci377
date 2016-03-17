@@ -4,7 +4,7 @@
 
 // overview: circular queue implementation.
 
-// overview: allocation functions
+// overview: memory allocation function
 data *new_data(int additional_data, int request_length){
   data *d = (data *)malloc(sizeof(data));
   d->id = additional_data;
@@ -12,12 +12,14 @@ data *new_data(int additional_data, int request_length){
   return d;
 }
 
+// overview: memory allocation function
 node *new_node(){
   node *n = (node *)malloc(sizeof(node));
   n->next = NULL;
   return n;
 }
 
+// overview: memory allocation function
 linked *new_linked(int N){
   linked *l = (linked *)malloc(sizeof(linked));
   l->r_id = 0;
@@ -28,7 +30,7 @@ linked *new_linked(int N){
   return l;
 }
 
-// overview: initialize new node
+// overview: initialize new node helper function
 void init_new_node(node *ptr, linked *l, data* d){
   ptr->next = new_node();
   ptr->next->data = d;
@@ -38,7 +40,7 @@ void init_new_node(node *ptr, linked *l, data* d){
 }
 
 
-// overview: initialize new linked list/queue
+// overview: initialize new linked list/queue helper function
 void init_new_queue(linked *l, data* d){
   l->head = new_node();
   l->head->data = d;
