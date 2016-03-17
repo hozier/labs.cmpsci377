@@ -41,7 +41,7 @@ public class Part2 {
     	producer = new Producer();
     	producer.start(); // start the Producer thread
 
-    	for(int i=0; i < (slave_number-1); i++){
+    	for(int i=0; i < (slave_number); i++){
     		consumer = new Consumer(i);
     		slaves[i] = consumer;
     		slaves[i].start(); // start the Consumer thread
