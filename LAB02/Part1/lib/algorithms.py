@@ -28,8 +28,8 @@ class Solution:
     overview: continue the initialization of global class variables
     @params: s: the simulation_time field of the data json
     @params: n: the number_of_jobs field of the data json
-    @params: d: the json read in from the .json file. the jobs
-    listed in the tracefiles are stored here.
+    @params: d: the json read in from the solution.js. the jobs
+    listed in a tracefile is stored here.
     returns void
     '''
     def map_init(self, s, n, d):
