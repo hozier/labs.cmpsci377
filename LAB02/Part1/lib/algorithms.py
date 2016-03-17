@@ -39,7 +39,7 @@ class Solution:
 
     '''
     overview: apply an algorithm -- either rr or fcfs to the json: f
-    @params: files: list of files in the cwd
+    @params: file: json received from solution.js
     @params: algorithm: a callback function
     returns a json file to callback if condition is true
     '''
