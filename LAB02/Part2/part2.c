@@ -4,12 +4,9 @@
 #include<stdlib.h>
 #include<unistd.h>
 #include"queue.h"
-//#include"queue.c"
-//#include"queue.c"
 
 typedef struct thread_data{
   int id;
-  //char* status[];
 } thread_data;
 
 sem_t mutex;
@@ -18,7 +15,7 @@ sem_t empty_count; //number of spaces available
 linked *queue;
 pthread_t master;
 
-int request_id=0;
+int request_id=0; //intializes request_id
 int res0;
 int sleep_time; //given by user input
 int request_max_length; //given by user input
