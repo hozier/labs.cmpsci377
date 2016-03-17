@@ -18,7 +18,7 @@ public class Part2 {
     static int slave_number; //constant for number of slaves
     static int sleep_time;	//constant for time between producing jobs
     static int request_max_length; //constant for max_length
-	static Producer producer; // instantiate a new Producer thread
+		static Producer producer; // instantiate a new Producer thread
     static Consumer consumer; // instantiate a new Consumer thread
     static Monitor monitor; // instantiate a new Monitor
 

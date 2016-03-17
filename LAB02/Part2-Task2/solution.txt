@@ -1,0 +1,202 @@
+Part2 java implementation (producer and consumer)
+
+DIRECTIONS:
+
+once the program is run, it will ask the user for the following input..
+ -buffer size (for job requests)
+ -number of slaves (consumers)
+ -sleep time for producer (time between producing requests)
+ -maximum job length (jobs will have random lengths lower than this number)
+
+ once all this input has been entered, it will print its progress to the console
+
+command to compile:   javac Part2.java
+command to run:       java Part2
+
+Sample Output:
+
+paul@paul-VirtualBox:~/377/labs.cmpsci377/LAB02/Part2-Task2$ javac Part2.java
+paul@paul-VirtualBox:~/377/labs.cmpsci377/LAB02/Part2-Task2$ java Part2
+please enter a buffer size
+10
+Enter Number of Slaves
+20
+Enter sleep time for producer between producing items
+1
+What should the maximum job request length be?
+40
+Producer: produced request ID 0 , length 30
+Producer: sleeping for 1 seconds
+Consumer 0: assigned request ID 0 , processing request for next 30 seconds
+Producer: produced request ID 1 , length 17
+Producer: sleeping for 1 seconds
+Consumer 1: assigned request ID 1 , processing request for next 17 seconds
+Producer: produced request ID 2 , length 19
+Producer: sleeping for 1 seconds
+Consumer 2: assigned request ID 2 , processing request for next 19 seconds
+Producer: produced request ID 3 , length 26
+Producer: sleeping for 1 seconds
+Consumer 3: assigned request ID 3 , processing request for next 26 seconds
+Producer: produced request ID 4 , length 25
+Producer: sleeping for 1 seconds
+Consumer 4: assigned request ID 4 , processing request for next 25 seconds
+Producer: produced request ID 5 , length 30
+Producer: sleeping for 1 seconds
+Consumer 5: assigned request ID 5 , processing request for next 30 seconds
+Producer: produced request ID 6 , length 25
+Producer: sleeping for 1 seconds
+Consumer 6: assigned request ID 6 , processing request for next 25 seconds
+Producer: produced request ID 7 , length 33
+Producer: sleeping for 1 seconds
+Consumer 7: assigned request ID 7 , processing request for next 33 seconds
+Producer: produced request ID 8 , length 30
+Producer: sleeping for 1 seconds
+Consumer 8: assigned request ID 8 , processing request for next 30 seconds
+Producer: produced request ID 9 , length 19
+Producer: sleeping for 1 seconds
+Consumer 9: assigned request ID 9 , processing request for next 19 seconds
+Producer: produced request ID 10 , length 3
+Producer: sleeping for 1 seconds
+Consumer 10: assigned request ID 10 , processing request for next 3 seconds
+Producer: produced request ID 11 , length 27
+Producer: sleeping for 1 seconds
+Consumer 11: assigned request ID 11 , processing request for next 27 seconds
+Producer: produced request ID 12 , length 21
+Producer: sleeping for 1 seconds
+Consumer 12: assigned request ID 12 , processing request for next 21 seconds
+Consumer 10: completed request ID 10
+Producer: produced request ID 13 , length 23
+Producer: sleeping for 1 seconds
+Consumer 13: assigned request ID 13 , processing request for next 23 seconds
+Producer: produced request ID 14 , length 33
+Producer: sleeping for 1 seconds
+Consumer 14: assigned request ID 14 , processing request for next 33 seconds
+Producer: produced request ID 15 , length 16
+Producer: sleeping for 1 seconds
+Consumer 15: assigned request ID 15 , processing request for next 16 seconds
+Producer: produced request ID 16 , length 21
+Producer: sleeping for 1 seconds
+Consumer 16: assigned request ID 16 , processing request for next 21 seconds
+Producer: produced request ID 17 , length 24
+Producer: sleeping for 1 seconds
+Consumer 17: assigned request ID 17 , processing request for next 24 seconds
+Consumer 1: completed request ID 1
+Producer: produced request ID 18 , length 9
+Producer: sleeping for 1 seconds
+Consumer 18: assigned request ID 18 , processing request for next 9 seconds
+Producer: produced request ID 19 , length 8
+Producer: sleeping for 1 seconds
+Consumer 10: assigned request ID 19 , processing request for next 8 seconds
+Producer: produced request ID 20 , length 17
+Producer: sleeping for 1 seconds
+Consumer 1: assigned request ID 20 , processing request for next 17 seconds
+Consumer 2: completed request ID 2
+Producer: produced request ID 21 , length 30
+Producer: sleeping for 1 seconds
+Consumer 2: assigned request ID 21 , processing request for next 30 seconds
+Producer: produced request ID 22 , length 18
+Producer: sleeping for 1 seconds
+Producer: produced request ID 23 , length 16
+Producer: sleeping for 1 seconds
+Producer: produced request ID 24 , length 22
+Producer: sleeping for 1 seconds
+Producer: produced request ID 25 , length 21
+Producer: sleeping for 1 seconds
+Producer: produced request ID 26 , length 23
+Producer: sleeping for 1 seconds
+Consumer 18: completed request ID 18
+Consumer 18: assigned request ID 22 , processing request for next 18 seconds
+Consumer 10: completed request ID 19
+Consumer 10: assigned request ID 23 , processing request for next 16 seconds
+Producer: produced request ID 27 , length 39
+Producer: sleeping for 1 seconds
+Consumer 9: completed request ID 9
+Consumer 9: assigned request ID 24 , processing request for next 22 seconds
+Producer: produced request ID 28 , length 1
+Producer: sleeping for 1 seconds
+Consumer 3: completed request ID 3
+Consumer 3: assigned request ID 25 , processing request for next 21 seconds
+Consumer 4: completed request ID 4
+Consumer 4: assigned request ID 26 , processing request for next 23 seconds
+Producer: produced request ID 29 , length 9
+Producer: sleeping for 1 seconds
+Consumer 0: completed request ID 0
+Consumer 0: assigned request ID 27 , processing request for next 39 seconds
+Producer: produced request ID 30 , length 31
+Producer: sleeping for 1 seconds
+Consumer 6: completed request ID 6
+Consumer 6: assigned request ID 28 , processing request for next 1 seconds
+Consumer 15: completed request ID 15
+Consumer 15: assigned request ID 29 , processing request for next 9 seconds
+Producer: produced request ID 31 , length 38
+Producer: sleeping for 1 seconds
+Consumer 6: completed request ID 28
+Consumer 6: assigned request ID 30 , processing request for next 31 seconds
+Producer: produced request ID 32 , length 23
+Producer: sleeping for 1 seconds
+Consumer 12: completed request ID 12
+Consumer 12: assigned request ID 31 , processing request for next 38 seconds
+Producer: produced request ID 33 , length 38
+Producer: sleeping for 1 seconds
+Producer: produced request ID 34 , length 19
+Producer: sleeping for 1 seconds
+Consumer 5: completed request ID 5
+Consumer 5: assigned request ID 32 , processing request for next 23 seconds
+Producer: produced request ID 35 , length 34
+Producer: sleeping for 1 seconds
+Consumer 13: completed request ID 13
+Consumer 13: assigned request ID 33 , processing request for next 38 seconds
+Producer: produced request ID 36 , length 17
+Producer: sleeping for 1 seconds
+Consumer 16: completed request ID 16
+Consumer 16: assigned request ID 34 , processing request for next 19 seconds
+Consumer 1: completed request ID 20
+Consumer 1: assigned request ID 35 , processing request for next 34 seconds
+Producer: produced request ID 37 , length 10
+Producer: sleeping for 1 seconds
+Consumer 8: completed request ID 8
+Consumer 8: assigned request ID 36 , processing request for next 17 seconds
+Consumer 11: completed request ID 11
+Consumer 11: assigned request ID 37 , processing request for next 10 seconds
+Producer: produced request ID 38 , length 12
+Producer: sleeping for 1 seconds
+Producer: produced request ID 39 , length 23
+Producer: sleeping for 1 seconds
+Consumer 7: completed request ID 7
+Consumer 7: assigned request ID 38 , processing request for next 12 seconds
+Consumer 15: completed request ID 29
+Consumer 15: assigned request ID 39 , processing request for next 23 seconds
+Producer: produced request ID 40 , length 9
+Producer: sleeping for 1 seconds
+Consumer 17: completed request ID 17
+Consumer 17: assigned request ID 40 , processing request for next 9 seconds
+Producer: produced request ID 41 , length 36
+Producer: sleeping for 1 seconds
+Producer: produced request ID 42 , length 27
+Producer: sleeping for 1 seconds
+Consumer 10: completed request ID 23
+Consumer 10: assigned request ID 41 , processing request for next 36 seconds
+Producer: produced request ID 43 , length 2
+Producer: sleeping for 1 seconds
+Producer: produced request ID 44 , length 24
+Producer: sleeping for 1 seconds
+Consumer 18: completed request ID 22
+Consumer 18: assigned request ID 42 , processing request for next 27 seconds
+Producer: produced request ID 45 , length 16
+Producer: sleeping for 1 seconds
+Producer: produced request ID 46 , length 37
+Producer: sleeping for 1 seconds
+Consumer 14: completed request ID 14
+Consumer 14: assigned request ID 43 , processing request for next 2 seconds
+Producer: produced request ID 47 , length 40
+Producer: sleeping for 1 seconds
+Consumer 11: completed request ID 37
+Consumer 11: assigned request ID 44 , processing request for next 24 seconds
+Producer: produced request ID 48 , length 25
+Producer: sleeping for 1 seconds
+Consumer 14: completed request ID 43
+Consumer 14: assigned request ID 45 , processing request for next 16 seconds
+Producer: produced request ID 49 , length 30
+Producer: sleeping for 1 seconds
+
+Then I ended my program, it would of run indefinitely otherwise.
