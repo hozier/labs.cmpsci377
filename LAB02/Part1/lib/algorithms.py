@@ -28,7 +28,7 @@ class Solution:
     overview: continue the initialization of global class variables
     @params: s: the simulation_time field of the data json
     @params: n: the number_of_jobs field of the data json
-    @params: d: the json read in from the solution.js. the jobs
+    @params: d: the json read in from solution.js. the jobs
     listed in a tracefile is stored here.
     returns void
     '''
