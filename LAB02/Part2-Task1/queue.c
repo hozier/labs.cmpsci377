@@ -5,6 +5,8 @@
 // overview: circular queue implementation.
 
 // overview: memory allocation function
+// @params: length of request (int) and optional int
+// returns a new data pointer
 data *new_data(int additional_data, int request_length){
   data *d = (data *)malloc(sizeof(data));
   d->id = additional_data;
@@ -13,6 +15,7 @@ data *new_data(int additional_data, int request_length){
 }
 
 // overview: memory allocation function
+// returns a new node pointer
 node *new_node(){
   node *n = (node *)malloc(sizeof(node));
   n->next = NULL;
@@ -20,6 +23,7 @@ node *new_node(){
 }
 
 // overview: memory allocation function
+// returns a new linked pointer
 linked *new_linked(int N){
   linked *l = (linked *)malloc(sizeof(linked));
   l->r_id = 0;
@@ -31,6 +35,8 @@ linked *new_linked(int N){
 }
 
 // overview: initialize new node helper function
+// @params: a linked, node and data pointer
+// return void
 void init_new_node(node *ptr, linked *l, data* d){
   ptr->next = new_node();
   ptr->next->data = d;
@@ -41,6 +47,8 @@ void init_new_node(node *ptr, linked *l, data* d){
 
 
 // overview: initialize new linked list/queue helper function
+// @params: a linked and data pointer
+// return void
 void init_new_queue(linked *l, data* d){
   l->head = new_node();
   l->head->data = d;
@@ -51,6 +59,8 @@ void init_new_queue(linked *l, data* d){
 
 
 // overview: add to tail of (circular) queue
+// @params: a linked pointer
+// returns void
 void add(linked *l, data *d){
   node *ptr = l->head;
   if (l->head == NULL/* condition */) {
@@ -109,6 +119,8 @@ void add(linked *l, data *d){
 }
 
 // overview: pop and return the head of queue
+// @params: a linked pointer
+// returns a node pointer
 node *pop(linked *l){
   if (l->head == NULL){ return NULL; }
   if (l->head->next == NULL){

@@ -26,16 +26,24 @@ struct linked{
 };
 
 // overview: memory allocation function
+// returns a new node pointer
 node *new_node();
 
 // overview: memory allocation function
+// returns a new linked pointer
 linked *new_linked();
 
 // overview: memory allocation function
+// @params: length of request (int) and optional int
+// returns a new data pointer
 data *new_data(int additional_data, int request_length);
 
 // overview: add to tail of queue
+// @params: a linked pointer
+// returns void
 void add(linked *l, data *d);
 
 // overview: pop and return the head of queue
+// @params: a linked pointer
+// returns a node pointer
 node *pop(linked *l);
