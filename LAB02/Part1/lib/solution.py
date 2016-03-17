@@ -80,18 +80,18 @@ class Solution:
 
     '''
     overview: the first come first serve algorithm implementation
-    @param: JSON: the json representation of a trace file
+    @param: trace_name: the name of the current trace file
     '''
-    def fcfs(self, JSON):
+    def fcfs(self, trace_name):
         waiting_queue = self.waiting_queue
         finished_jobs = deque()
         processing_time = 0
-        timer = 0
 
         while waiting_queue:
             current_job = waiting_queue.popleft()
             # print 'wait_time = processing_time[{0}] - start_time[{1}]'.format(processing_time, current_job['start_time'])
-            current_job['wait_time'] = processing_time - current_job['start_time']
+            if processing_time > current_job['start_time']:
+                current_job['wait_time'] = processing_time - current_job['start_time']
             processing_time += current_job['job_length'] # last thing to do.
             finished_jobs.append(current_job)
 
@@ -100,14 +100,14 @@ class Solution:
             total_time += job['wait_time']
 
         AWT = int(math.ceil(total_time/float(self.n)))
-        self.out('FCFS', AWT, JSON)
+        self.out('FCFS', AWT, trace_name)
 
 
     '''
     overview: the round robin algorithm implementation
-    @param: JSON: the json representation of a trace file
+    @param: trace_name: the name of the current trace file
     '''
-    def rr(self, JSON):
+    def rr(self, trace_name):
         waiting_queue = self.waiting_queue
         current_jobs = deque()
         finished_jobs = deque()
@@ -176,7 +176,7 @@ class Solution:
         # print 'number_of_jobs', number_of_jobs
 
         AWT = int(math.ceil(total_time/float(self.n))) # round up and convert to an integer
-        self.out('RR', AWT, JSON)
+        self.out('RR', AWT, trace_name)
 
 
 ''' function call executes the solution script '''
