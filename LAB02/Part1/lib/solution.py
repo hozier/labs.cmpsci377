@@ -3,7 +3,7 @@ from collections import deque
 
 class Solution:
 
-    ''' overview: initialize class global class variable '''
+    ''' overview: initialize global class variable '''
     def __init__(self):
         self.time_slice = 1
 
