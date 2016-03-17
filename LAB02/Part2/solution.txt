@@ -1,0 +1,73 @@
+Part2 c implementation (producer and consumer)
+
+DIRECTIONS:
+
+once the program is run, it will ask the user for the following input..
+ -buffer size (for job requests)
+ -number of slaves (consumers)
+ -sleep time for producer (time between producing requests)
+ -maximum job length (jobs will have random lengths lower than this number)
+
+ once all this input has been entered, it will print its progress to the console
+
+command to compile:   make all
+command to clean:     make clean
+command to run:       ./part2
+
+NOTE: This worked on linux and ubuntu but NOT on macintosh for whatever reason
+
+Sample Output:
+
+paul@paul-VirtualBox:~/377/labs.cmpsci377/LAB02/Part2$ ./part2
+Enter a Buffer Size	 50
+Enter Number of Slaves:	 10
+how long should the producer sleep between requests:	 5
+what should the maximum job request length be:	 20
+Producer: produced request ID: 0 , length: 3 seconds
+Consumer 5: assigned request ID: 0 , processing request for next 3 seconds
+Consumer 5:completed request ID: 0
+Producer: sleeping for: 5 seconds
+Producer: produced request ID: 1 , length: 6 seconds
+Consumer 6: assigned request ID: 1 , processing request for next 6 seconds
+Producer: sleeping for: 5 seconds
+Producer: produced request ID: 2 , length: 17 seconds
+Consumer 7: assigned request ID: 2 , processing request for next 17 seconds
+Consumer 6:completed request ID: 1
+Producer: sleeping for: 5 seconds
+Producer: produced request ID: 3 , length: 15 seconds
+Consumer 8: assigned request ID: 3 , processing request for next 15 seconds
+Producer: sleeping for: 5 seconds
+Producer: produced request ID: 4 , length: 13 seconds
+Consumer 9: assigned request ID: 4 , processing request for next 13 seconds
+Producer: sleeping for: 5 seconds
+Producer: produced request ID: 5 , length: 15 seconds
+Consumer 4: assigned request ID: 5 , processing request for next 15 seconds
+Consumer 7:completed request ID: 2
+Consumer 8:completed request ID: 3
+Producer: sleeping for: 5 seconds
+Producer: produced request ID: 6 , length: 6 seconds
+Consumer 3: assigned request ID: 6 , processing request for next 6 seconds
+Consumer 9:completed request ID: 4
+Producer: sleeping for: 5 seconds
+Producer: produced request ID: 7 , length: 12 seconds
+Consumer 2: assigned request ID: 7 , processing request for next 12 seconds
+Consumer 3:completed request ID: 6
+Consumer 4:completed request ID: 5
+Producer: sleeping for: 5 seconds
+Producer: produced request ID: 8 , length: 9 seconds
+Consumer 1: assigned request ID: 8 , processing request for next 9 seconds
+Producer: sleeping for: 5 seconds
+Producer: produced request ID: 9 , length: 1 seconds
+Consumer 0: assigned request ID: 9 , processing request for next 1 seconds
+Consumer 0:completed request ID: 9
+Consumer 2:completed request ID: 7
+Consumer 1:completed request ID: 8
+Producer: sleeping for: 5 seconds
+Producer: produced request ID: 10 , length: 2 seconds
+Consumer 5: assigned request ID: 10 , processing request for next 2 seconds
+Consumer 5:completed request ID: 10
+Producer: sleeping for: 5 seconds
+Producer: produced request ID: 11 , length: 7 seconds
+Consumer 6: assigned request ID: 11 , processing request for next 7 seconds
+
+Then I ended the program, it would of gone on indefinitely.
