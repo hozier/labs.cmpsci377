@@ -101,7 +101,7 @@ class Solution:
         while waiting_queue:
             current_job = waiting_queue.popleft()
             # print 'wait_time = processing_time[{0}] - start_time[{1}]'.format(processing_time, current_job['start_time'])
-            print "Processing time: {0}. Current job start time: {1}. Job length: {2}".format(processing_time, current_job['start_time'], current_job['job_length'])
+            # print "Processing time: {0}. Current job start time: {1}. Job length: {2}".format(processing_time, current_job['start_time'], current_job['job_length'])
             if processing_time > current_job['start_time']:
                 current_job['wait_time'] = processing_time - current_job['start_time']
                 processing_time += current_job['job_length']
