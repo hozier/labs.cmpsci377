@@ -2,20 +2,42 @@ import os, math, json
 from collections import deque
 
 class Solution:
+    '''
+    overview:
+    @params:
+    '''
+    '''
+    overview: initialize class global variable
+    @params:
+    '''
     def __init__(self):
         self.time_slice = 1
 
+    '''
+    overview: continue the initialization of class global variables
+    @params: f: an open file object
+    '''
     def initialize_variables(self, f):
         f = open(f, 'r')
         data = json.loads(f.read()) # data now contains a dict of the jobs
         self.waiting_queue = deque([self.map_key(x) for x in data['jobs']])
         self.map_init("simulation_time", "number_of_jobs", data)
 
+    '''
+    overview: continue the initialization of class global variables
+    @params: s: the simulation_time field of the data json
+    @params: n: the number_of_jobs field of the data json
+    @params: d: the json read in from the .json file
+    '''
     def map_init(self, s, n, d):
         self.s = d[s]
         self.n = d[n]
         self.d = d
 
+    '''
+    overview: apply an algorithm -- either rr or fcfs to the json which has
+    @params:
+    '''
     def select_algorithm(self, files, algorithm):
         for f in files:
             if 'json' in f:
