@@ -1,4 +1,4 @@
-import os, math, json
+import os, math, json, sys
 from collections import deque
 
 class Solution:
@@ -6,6 +6,8 @@ class Solution:
     ''' overview: initialize global class variable '''
     def __init__(self):
         self.time_slice = 1 # time quantum variable
+        self.trace_name = sys.argv[2]
+        self.data = sys.argv[1]
 
 
     '''
@@ -13,10 +15,9 @@ class Solution:
     @params: f: an open file object
     returns void
     '''
-    def initialize_variables(self, f):
-        f = open(f, 'r')
-        data = json.loads(f.read()) # data now contains a dictionary (json) of the jobs
-
+    def initialize_variables(self):
+        # f = open(f, 'r')
+        data = json.loads(self.data) # data now contains a dictionary (json) of the jobs
         # maps the key 'wait_time' into the waiting_queue structure
         # used as the starting point queue where all jobs initially reside
         self.waiting_queue = deque([self.map_key(x) for x in data['jobs']])
@@ -34,7 +35,6 @@ class Solution:
     def map_init(self, s, n, d):
         self.s = d[s]
         self.n = d[n]
-        self.d = d
 
 
     '''
@@ -43,11 +43,9 @@ class Solution:
     @params: algorithm: a callback function
     returns a json file to callback if condition is true
     '''
-    def select_algorithm(self, files, algorithm):
-        for f in files:
-            if 'json' in f:
-                self.initialize_variables(f)
-                algorithm(f)
+    def select_algorithm(self, file, algorithm):
+        self.initialize_variables()
+        algorithm(file)
 
 
     '''
@@ -55,11 +53,8 @@ class Solution:
     returns void
     '''
     def _exec(self):
-        # returns a list of all files in the cwd
-        files = [f for f in os.listdir('.') if os.path.isfile(f)]
-
-        self.select_algorithm(files, self.rr)
-        self.select_algorithm(files, self.fcfs)
+        self.select_algorithm(self.trace_name, self.rr)
+        self.select_algorithm(self.trace_name, self.fcfs)
 
 
     '''

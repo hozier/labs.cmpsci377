@@ -101,8 +101,10 @@ module.exports = {
   },
 
 
-  /* overview: writes the generated, parsed data which sits in json to file
-    and saves it as a .json extension.
+  /* overview: passes the generated, parsed data which sits in json to
+    algorithms.py by spawning a new process. the function hands off json as
+    an argument parameter of the python script. the python script consumes
+    the json, computes, prints to file an AWT and awaits other jsons.
 
     @params: trace: the generated json
     @params: filename: the full path of the original trace file which
@@ -110,23 +112,43 @@ module.exports = {
     returns void
   */
 
-  write:
+  pass:
     function (trace, filename){
 
       console.log(trace);
-      // names the files according to the trace they came from
 
-      fs.appendFile(filename.split("/").pop().split(".").shift() + '.json', JSON.stringify(trace, null, 2)+"\n\n", function (err){
-        if (err) throw err;
-        console.log('The "data to append" was appended to file!');
-      });
+      // spawn a new process, executes the python binary
+      // instructs python to run the algorithms.py script for
+      // each parsed json.
+      if(trace !== undefined && filename !== undefined){
+        const execFile = require('child_process').execFile;
+        const child_two = execFile('python', ['algorithms.py', JSON.stringify(trace), filename.split("/").pop().split(".").shift()], function (error, stdout, stderr){
+          if (error) {
+            throw error;
+          }
+          console.log(stdout);
+        });
+      }
+
+
     }
 };
 
-// function call executes the parse script
+
+// function call executes the solution script
 module.exports.exec(function(files){
-  // for each .txt in the dir, parse it, write it.
+
+  // spawn a new process, executes system call to remove old solution.txt from dir
+  const execFile = require('child_process').execFile;
+  const child_one = execFile('rm', ['-rf', 'solution.txt'], function (error, stdout, stderr){
+    if (error) {
+      throw error;
+    }
+    console.log(stdout);
+  });
+
+  // for each .txt in the dir, parse it, pass it.
   files.forEach(function(filename){
-    module.exports.construct_json(curr_folder+filename, module.exports.write)
+    module.exports.construct_json(curr_folder+filename, module.exports.pass)
   });
 });
