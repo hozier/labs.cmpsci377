@@ -4,6 +4,8 @@ import java.util.*;
 import java.io.*;
 
 // HW02PT1 Solution.
+// __________________________________ Solution Class __________________________________
+
 public class Solution{
 
 
@@ -40,7 +42,8 @@ public class Solution{
     return list;
   }
 
-  // overview: initializes the Banker’s Algorithm state.
+  // overview: creates a new Bankers_Algorithm object and
+  // initializes the Banker’s Algorithm state.
   public Bankers_Algorithm init(List<String> lines){
     Bankers_Algorithm object = new Bankers_Algorithm();
 
@@ -125,6 +128,7 @@ public class Solution{
 
 
 
+  // __________________________________ Bankers_Algorithm Class __________________________________
 
   // overview: private inner class known and accessible only to the Solution class.
   private static class Bankers_Algorithm{
@@ -144,6 +148,7 @@ public class Solution{
       // 1.
       int WORK[] = new int[n];
       boolean FINISH[] = new boolean[m];
+      boolean breaking;
 
       // WORK = this.available_resource_units;
       for (boolean i : FINISH) {   i = false; }
@@ -151,10 +156,13 @@ public class Solution{
       //2.
       // Find an index i // find a process such that:
       for (int i = 0; i < m /*process array length*/; ++i) {
+        breaking = false;
 
         for (int resource_id = 0; resource_id < n ; resource_id++) {
-          // if(FINISH[i] == false && processes[i].need[resource_id] <= available_resource_units[resource_id]){
-          if(FINISH[i] == false && resource_request_check(i, resource_id)){
+          // if(FINISH[i] == false && processes[i].need[resource_id] <= available_resource_units[resource_id])
+          boolean check = resource_request_check(i, resource_id);
+          out.println(check);
+          if(FINISH[i] == false && check){
 
 
 
@@ -163,12 +171,13 @@ public class Solution{
 
             WORK[resource_id] = available_resource_units[resource_id] = available_resource_units[resource_id] + processes[i].initial_allocation_array[resource_id];
             FINISH[i] = true;
+            breaking = true;
             // out.println("it is now true");
-          }
+          } else {return false; }
 
           // jump back to the start of the outter loop.
           // find new i index.
-          break;
+          if(breaking){out.println("break"); break;}
         }
 
       } // end of outter for loop.
@@ -189,7 +198,7 @@ public class Solution{
       AVAILABLE = available_resource_units[resource_id];
       ALLOCATION = processes[i].initial_allocation_array[resource_id];
 
-      out.printf("request: %d, need: %d\n", REQUEST, NEED);
+      // out.printf("request: %d, need: %d\n", REQUEST, NEED);
       if(REQUEST > NEED && REQUEST > AVAILABLE){
         return false;
       }
