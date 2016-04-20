@@ -2,7 +2,7 @@
 
 // overview: helps map the page number of a given logical address
 uint16_t compute_page_number( uint16_t m,  uint16_t n,  uint16_t v){
-  return (v >> ((1 << (n))-2));  // v DIV 2**n
+  return (v >> (n));  // v DIV 2**n
 }
 
 // overview: helps map the offset of a given logical address
