@@ -15,12 +15,12 @@ public class Part2 {
 	static boolean interrupted= false;
 	static int new_id= 0;
 	static int buffer_size; // constant for the buffer size
-    static int slave_number; //constant for number of slaves
-    static int sleep_time;	//constant for time between producing jobs
-    static int request_max_length; //constant for max_length
-		static Producer producer; // instantiate a new Producer thread
-    static Consumer consumer; // instantiate a new Consumer thread
-    static Monitor monitor; // instantiate a new Monitor
+  static int slave_number; //constant for number of slaves
+  static int sleep_time;	//constant for time between producing jobs
+  static int request_max_length; //constant for max_length
+	static Producer producer; // instantiate a new Producer thread
+  static Consumer consumer; // instantiate a new Consumer thread
+  static Monitor monitor; // instantiate a new Monitor
 
 
     public static void main(String args[]) {
@@ -56,12 +56,12 @@ public class Part2 {
              monitor.insert(r); //add new request to buffer
              try {
             	System.out.println("Producer: sleeping for " + sleep_time + " seconds");
-				Thread.sleep(sleep_time*1000);
-				//break;
-			} catch (InterruptedException e) {
-				System.out.println("Interrupt occurred!");
-			}
-         }
+							Thread.sleep(sleep_time*1000);
+							//break;
+						} catch (InterruptedException e) {
+							System.out.println("Interrupt occurred!");
+						}
+         	}
       }
       private request produceItem() {
          Random rand = new Random();
@@ -74,32 +74,30 @@ public class Part2 {
    } // class Producer
 
    public static class Consumer extends Thread {
-
 	  public int id;
 	  public Consumer(int cid){
 		  id = cid;
 	  }
 
-      public void run() { // run method with the thread code
-         request r;
-          while (true) { // consumer loop : infinite loop
-             r = monitor.remove();
-             consumeItem(r);
-         }
+    public void run() { // run method with the thread code
+    	request r;
+      while (true) { // consumer loop : infinite loop
+          r = monitor.remove();
+          consumeItem(r);
       }
-      private void consumeItem(request request) {
-         try {
-        	System.out.println("Consumer "+ this.id + ": assigned request ID " + request.id + " , processing request for next "+ request.length + " seconds");
-			Thread.sleep(request.length*1000);
-			System.out.println("Consumer "+ this.id + ": completed request ID " + request.id);
-		} catch (InterruptedException e) {
-			System.out.println("Interrupt occurred!");
-		} //it takes the length of the job to consume the item
+    }
+    private void consumeItem(request request) {
+    	try {
+        System.out.println("Consumer "+ this.id + ": assigned request ID " + request.id + " , processing request for next "+ request.length + " seconds");
+				Thread.sleep(request.length*1000);
+				System.out.println("Consumer "+ this.id + ": completed request ID " + request.id);
+			} catch (InterruptedException e) {
+				System.out.println("Interrupt occurred!");
+			} //it takes the length of the job to consume the item
       }
-   } // class Consumer
+   	} // class Consumer
 
    static class Monitor { // Monitor definition
-
        private request queue[] = new request [buffer_size];
        private int count = 0;
        private int lo = 0, hi = 0;
