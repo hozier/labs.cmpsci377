@@ -28,7 +28,7 @@ inode *new_inode(){
 super_block *new_super_block(){
   super_block *s = (super_block *)malloc(sizeof(super_block));
 
-  // init the free block to a '0' character type
+  // new addition: init the free block to a '0' character type
   for (size_t i = 0; i < 16; i++) {
     /* code */
     s->free_block_list[i] = '0';
