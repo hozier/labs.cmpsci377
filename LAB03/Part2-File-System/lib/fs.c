@@ -5,7 +5,6 @@ typedef struct inode inode;
 typedef struct data_block data_block;
 typedef struct super_block super_block;
 
-
 struct inode{
   char name[8];           // file name
   int32_t  size;             // file size (in number of blocks)
@@ -17,7 +16,6 @@ struct super_block{
   char free_block_list[128];
   inode i[16];
 };
-
 
 // memory allocation routines.
 inode *new_inode(){
@@ -44,11 +42,13 @@ and the file does not grow or shrink from this point on)
 */
 
 void create(char name[8], int32_t size){
+  File disk = fopen("../resources/disk0", "r+");
   for(int j = 0; j<16; j++){
     if(super_block.i[j].used ==0){
       FILE *newFile = fopen(name, "w");
-      //somehow limit size of file to 8*1024
-      put_file_in_disk(newFile); //not a method yet
+      int blockNum = super_block.i[j]
+      //somehow limit size of fi
+      feek(disk, ); //not a method yet
     }
     break;
   }
@@ -57,34 +57,44 @@ void create(char name[8], int32_t size){
 // overview: delete the file with this name.
 
 void delete(char name[8]){
-  File file = find_file(name); //not a method yet
-  remove(file); //not a method yet
+  for(int j=0; j<16;j++){
+    if(super_block.i[j].name == name){
+      FILE *disk = fopen("../resources/disk0", "r+");
+      fseek(disk, blockNum*1024, (SEEK_SET+(48*j));
+    }
+  }
 }
 
 // overview: read the specified block from this file into the specified buffer;
 // blockNum can range from 0 to 7.
 
 void read(char name[8], int32_t blockNum, char buf[1024]){
-  FILE file = find_file(name); //not a method yet
-  fseek(file, blockNum*1024, SEEK_SET);
-  fread(buf, 1024 , 1, file);
+  for(int j = 0; j<16; j++){
+    if(super_block.i[j].name == name){
+      FILE *disk = fopen("../resources/disk0", "r+");
+      fseek(disk, blockNum*1024, (SEEK_SET+(48*j));
+      fread(buf, 1024, 1, disk);
+    }
+  }
 }
 
 // overview: write the data in the buffer to the specified block in this file.
 
 void write(char name[8], int32_t blockNum, char buf[1024]){
-  FILE file = find_file(name); //not a method yet
-  fseek(file, blockNum*1024, SEEK_SET);
-  fwrite(buf, 1024, 1, file);
+  for(int j = 0; j<16; j++){
+    if(super_block.i[j].name == name){
+      FILE *disk = fopen("../resources/disk0", "r+");
+      fseek(disk, blockNum*1024, (SEEK_SET+(48*j)));
+      fwrite(buf, 1024, 1 disk);
+    }
+  }
 }
 
 // overview: list the names of all files in the file system and their sizes.
-
 void ls(){
   for(int j = 0; j<16; j++){
     if(super_block.i[j].used==1){
-      FILE file = find_file_at_index(j);
-      printf('%s'\n,file);
+      printf('%s'\n,super_block.i[j].name);
     }
   }
 }
@@ -94,6 +104,7 @@ int main(int argc, char const *argv[]) {
   /* code */
   super_block *sb = new_super_block();
   sb->free_block_list[0] = '1'; // the super block is not free.
+
 
   printf("size of super block: %lu\n", sizeof(*sb));
   return 0;
