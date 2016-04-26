@@ -37,6 +37,7 @@ super_block *new_super_block(){
   return s;
 }
 
+super_block super_block = new super_block();
 
 // overview: the fs API.
 /*
