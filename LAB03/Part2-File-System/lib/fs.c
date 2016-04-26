@@ -46,15 +46,18 @@ and the file does not grow or shrink from this point on)
 */
 
 void create(char name[8], int32_t size){
-  File disk = fopen("../resources/disk0", "r+");
   for(int j = 0; j<16; j++){
     if(super_block.i[j].used ==0){
+      FILE disk = fopen("../resources/disk0", "r+");
       FILE *newFile = fopen(name, "w");
       int blockNum = super_block.i[j]
       //somehow limit size of fi
-      feek(disk, ); //not a method yet
+      fseek(disk, 0 ,(SEEK_SET+(48*j))); //not a method yet
+      fwrite(file, 1024, 8, disk);
+      super_block.i[j].used =1;
+      super_block.i[j].name = name;
+      break;
     }
-    break;
   }
 }
 
