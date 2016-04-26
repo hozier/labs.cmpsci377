@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 typedef struct inode inode;
 typedef struct data_block data_block;
@@ -35,6 +36,7 @@ super_block *new_super_block(){
   }
   return s;
 }
+
 
 // overview: the fs API.
 /*
@@ -101,11 +103,66 @@ void ls(){
   }
 }
 
+// overview: returns a string array of the currently parsed line in input text file
+// excludes new line characters as well as the firstmost line known as 'disk0'
+char ** dictionary(char *str){
+  const char s[2] = " ";
+  char **dictionary = (char **)malloc(sizeof(char)*3);
+  int i = 0;
+
+  /* get the first token */
+  dictionary[i] = strtok(str, s);
+
+  /* walk through other tokens */
+  while( dictionary[i] != NULL ){
+    // printf( " %s\n", dictionary[i] ); // debug.
+    dictionary[++i] = strtok(NULL, s);
+  }
+  return dictionary;
+}
+
+// overview: parse each line of the input file, execute parsed commands
+void parse(){
+  FILE *fp = fopen("../resources/lab3Input.txt", "r");
+  char * line = NULL;
+  size_t len = 0;
+
+  ssize_t read;
+  while ((read = getline(&line, &len, fp)) != -1) {
+    // printf("Retrieved line of length %zu :\n", read); //debug.
+    if(line[0] != '\n' && strcmp(line, "disk0") != 0){
+      // printf("%s", line); // debug
+      char command = line[0];
+      char **options = dictionary(line); // works! // options for fs API calls.
+        switch (command){
+          case 'C':
+            create(options[1], atoi(options[2]));
+            break;
+          case 'L':
+            ls();
+            break;
+          case 'R':
+            read(options[1],atoi(options[2]), NULL);
+            break;
+          case 'W':
+            write(options[1],atoi(options[2]), NULL);
+            break;
+          case 'D':
+            delete(options[1]);
+            break;
+          default:
+            break;
+      } // end switch.
+    }
+  } // end while.
+}
+
 // the main driving method.
 int main(int argc, char const *argv[]) {
   /* code */
   super_block *sb = new_super_block();
   sb->free_block_list[0] = '1'; // the super block is not free.
+  parse();
 
 
   printf("size of super block: %lu\n", sizeof(*sb));
