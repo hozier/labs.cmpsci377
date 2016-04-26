@@ -37,7 +37,7 @@ super_block *new_super_block(){
   return s;
 }
 
-super_block super_block = new super_block();
+super_block *sb;
 
 // overview: the fs API.
 /*
@@ -48,15 +48,15 @@ and the file does not grow or shrink from this point on)
 
 void create(char name[8], int32_t size){
   for(int j = 0; j<16; j++){
-    if(super_block.i[j].used ==0){
+    if(sb.i[j].used ==0){
       FILE disk = fopen("../resources/disk0", "r+");
       FILE *newFile = fopen(name, "w");
       int blockNum = super_block.i[j]
       //somehow limit size of fi
       fseek(disk, 0 ,(SEEK_SET+(48*j))); //not a method yet
       fwrite(file, 1024, 8, disk);
-      super_block.i[j].used =1;
-      super_block.i[j].name = name;
+      sb.i[j].used =1;
+      sb.i[j].name = name;
       break;
     }
   }
@@ -66,12 +66,12 @@ void create(char name[8], int32_t size){
 
 void delete(char name[8]){
   for(int j=0; j<16;j++){
-    if(super_block.i[j].name == name){
+    if(sb.i[j].name == name){
       FILE *disk = fopen("../resources/disk0", "r+");
       fseek(disk, blockNum*1024, (SEEK_SET+(48*j));
       //delete FILE
-      super_block.i[j].name = "";
-      super_block.i[j].used =0;
+      sb.i[j].name = "";
+      sb.i[j].used =0;
 
     }
   }
@@ -82,7 +82,7 @@ void delete(char name[8]){
 
 void read(char name[8], int32_t blockNum, char buf[1024]){
   for(int j = 0; j<16; j++){
-    if(super_block.i[j].name == name){
+    if(sb.i[j].name == name){
       FILE *disk = fopen("../resources/disk0", "r+");
       fseek(disk, blockNum*1024, (SEEK_SET+(48*j));
       fread(buf, 1024, 1, disk);
@@ -94,7 +94,7 @@ void read(char name[8], int32_t blockNum, char buf[1024]){
 
 void write(char name[8], int32_t blockNum, char buf[1024]){
   for(int j = 0; j<16; j++){
-    if(super_block.i[j].name == name){
+    if(sb.i[j].name == name){
       FILE *disk = fopen("../resources/disk0", "r+");
       fseek(disk, blockNum*1024, (SEEK_SET+(48*j)));
       fwrite(buf, 1024, 1 disk);
@@ -105,8 +105,8 @@ void write(char name[8], int32_t blockNum, char buf[1024]){
 // overview: list the names of all files in the file system and their sizes.
 void ls(){
   for(int j = 0; j<16; j++){
-    if(super_block.i[j].used==1){
-      printf('%s'\n,super_block.i[j].name);
+    if(sb.i[j].used==1){
+      printf('%s'\n,sb.i[j].name);
     }
   }
 }
