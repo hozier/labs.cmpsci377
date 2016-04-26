@@ -65,6 +65,10 @@ void delete(char name[8]){
     if(super_block.i[j].name == name){
       FILE *disk = fopen("../resources/disk0", "r+");
       fseek(disk, blockNum*1024, (SEEK_SET+(48*j));
+      //delete FILE
+      super_block.i[j].name = "";
+      super_block.i[j].used =0;
+
     }
   }
 }
