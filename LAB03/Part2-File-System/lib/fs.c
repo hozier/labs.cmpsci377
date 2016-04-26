@@ -25,12 +25,14 @@ inode *new_inode(){
 
 super_block *new_super_block(){
   super_block *s = (super_block *)malloc(sizeof(super_block));
-  // for (size_t i = 0; i < 16; i++) {
-  //   /* code */
-  //   s->free_block_list[i] = '0';
-  //   s->i[i] = new_inode();
-  //   // printf("size of new_inode: %lu\n", sizeof(s->i[i]));
-  // }
+
+  // new addition: init the free block to a '0' character type
+  for (size_t i = 0; i < 16; i++) {
+    /* code */
+    s->free_block_list[i] = '0';
+    s->i[i] = *new_inode();
+    // printf("size of new_inode: %lu\n", sizeof(s->i[i]));
+  }
   return s;
 }
 
