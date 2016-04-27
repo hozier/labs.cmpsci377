@@ -68,11 +68,10 @@ void delete(char name[8]){
   for(int j=0; j<16;j++){
     if(sb.i[j].name == name){
       FILE *disk = fopen("../resources/disk0", "r+");
-      fseek(disk, blockNum*1024, (SEEK_SET+(48*j));
+      fseek(disk, blockNum*1024, (SEEK_SET+(48*j)));
       //delete FILE
       sb.i[j].name = "";
       sb.i[j].used =0;
-
     }
   }
 }
@@ -135,7 +134,7 @@ void parse(){
   char * line = NULL;
   size_t len = 0;
 
-  ssize_t read;
+  size_t read;
   while ((read = getline(&line, &len, fp)) != -1) {
     // printf("Retrieved line of length %zu :\n", read); //debug.
     if(line[0] != '\n' && strcmp(line, "disk0") != 0){
