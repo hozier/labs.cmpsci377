@@ -55,8 +55,8 @@ void create(char name[8], int32_t size){
       printf("inode [%d] of the super block is free\n", j);
       FILE *disk = fopen("../resources/disk0", "r+");
       FILE *newFile = fopen(name, "w");
-      //somehow limit size of fi
-      fseek(disk, 0 ,(SEEK_SET+(48*j))); //not a method yet
+
+      fseek(disk, 0 ,(SEEK_SET+(48*j))); 
       fwrite(newFile, 1024, 8, disk);
       sb->i[j].used =1;
       strcpy(sb->i[j].name, name);       // replaced: <====> sb->i[j].name = name;
