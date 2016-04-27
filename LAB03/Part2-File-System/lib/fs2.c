@@ -135,7 +135,7 @@ void parse(){
   FILE *fp = fopen("../resources/lab3Input.txt", "r");
   char * line = NULL;
   size_t len = 0;
-
+  char buf[1024];
   size_t read1;
   while ((read1 = getline(&line, &len, fp)) != -1) {
     // printf("Retrieved line of length %zu :\n", read); //debug.
@@ -151,13 +151,13 @@ void parse(){
             ls();
             break;
           case 'R':
-            // read(options[1],atoi(options[2]), NULL);
+            read(options[1],atoi(options[2]), buf);
             break;
           case 'W':
-            // write(options[1],atoi(options[2]), NULL);
+            write(options[1],atoi(options[2]), buf);
             break;
           case 'D':
-            // delete(options[1]);
+            delete(options[1]);
             break;
           default:
             break;
