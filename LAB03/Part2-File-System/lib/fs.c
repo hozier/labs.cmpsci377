@@ -148,8 +148,8 @@ void debug(char *command, char *name, int32_t blockNum){
 }
 
 // overview: parse each line of the input file, execute parsed commands
-void parse(){
-  FILE *fp = fopen("../resources/lab3Input.txt", "r");
+void parse(char *path){
+  FILE *fp = fopen(path, "r");
   char line[20];
   // size_t len = 0;
   char buf[1024];
@@ -202,7 +202,7 @@ int main(int argc, char const *argv[]) {
   // overview: initialize the new global super block
   sb = new_super_block();
   sb->free_block_list[0] = '1'; // the super block is not free.
-  parse();
+  parse("../resources/lab3Input.txt");
 
   // overview: verifying the size of the space on the fs data structure.
   printf("size of super block: %d\n", (int)sizeof(*sb));
