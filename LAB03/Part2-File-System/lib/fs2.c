@@ -107,7 +107,7 @@ void write(char name[8], int32_t blockNum, char buf[1024]){
 void ls(){
   for(int j = 0; j<16; j++){
     if(sb->i[j].used==1){
-      printf('%s\n',sb->i[j].name);
+      printf("%s\n",sb->i[j].name);
     }
   }
 }
@@ -148,7 +148,7 @@ void parse(){
             create(options[1], atoi(options[2]));
             break;
           case 'L':
-            // ls();
+            ls();
             break;
           case 'R':
             // read(options[1],atoi(options[2]), NULL);
