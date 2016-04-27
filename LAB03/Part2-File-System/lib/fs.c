@@ -52,6 +52,7 @@ and the file does not grow or shrink from this point on)
 void create(char name[8], int32_t size){
   for(int j = 0; j<16; j++){
     if(sb->i[j].used ==0){
+      printf("inode [%d] of the super block is free\n", j);
       FILE *disk = fopen("../resources/disk0", "r+");
       FILE *newFile = fopen(name, "w");
       //somehow limit size of fi
@@ -68,6 +69,7 @@ void create(char name[8], int32_t size){
 void delete(char name[8]){
   for(int j=0; j<16;j++){
     if(strcmp(sb->i[j].name, name) == 0 ){
+      printf("inode [%d] of the super block contains %s\n", j, name);
       FILE *disk = fopen("../resources/disk0", "r+");
       fseek(disk, 0, (SEEK_SET+(48*j)));
       //delete FILE
@@ -84,6 +86,7 @@ void delete(char name[8]){
 void read(char name[8], int32_t blockNum, char buf[1024]){
   for(int j = 0; j<16; j++){
     if(strcmp(sb->i[j].name, name) == 0 ){
+      printf("inode [%d] of the super block contains %s\n", j, name);
       FILE *disk = fopen("../resources/disk0", "r+");
       fseek(disk, blockNum*1024, (SEEK_SET+(48*j)));
       fread(buf, 1024, 1, disk);
@@ -95,6 +98,7 @@ void read(char name[8], int32_t blockNum, char buf[1024]){
 void write(char name[8], int32_t blockNum, char buf[1024]){
   for(int j = 0; j<16; j++){
     if(strcmp(sb->i[j].name, name) == 0 ){
+      printf("inode [%d] of the super block contains %s\n", j, name);
       FILE *disk = fopen("../resources/disk0", "r+");
       fseek(disk, blockNum*1024, (SEEK_SET+(48*j)));
       fwrite(buf, 1024, 1, disk);
@@ -163,8 +167,8 @@ void parse(){
 
         switch (command){
           case 'C':
-            debug("Created", name, atoi(options[2]));
             create(name, atoi(options[2]));
+            debug("Created", name, atoi(options[2]));
             break;
           case 'L':
             // printf("calling ls:\n");
@@ -172,17 +176,17 @@ void parse(){
             ls();
             break;
           case 'R':
-            debug("Read", name, atoi(options[2]));
             read(name,atoi(options[2]), buf);
+            debug("Read", name, atoi(options[2]));
             break;
           case 'W':
-            debug("Wrote", name, atoi(options[2]));
             write(name,atoi(options[2]), buf);
+            debug("Wrote", name, atoi(options[2]));
             break;
           case 'D':
             name[strlen(name)-1] = '\0';
-            debug("Deleted", name, 0);
             delete(name);
+            debug("Deleted", name, 0);
             break;
           default:
             break;
