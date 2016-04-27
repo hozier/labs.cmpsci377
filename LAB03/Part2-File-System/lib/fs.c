@@ -175,7 +175,6 @@ int main(int argc, char const *argv[]) {
   sb->free_block_list[0] = '1'; // the super block is not free.
   parse();
 
-
-  printf("size of super block: %lu\n", sizeof(*sb));
+  printf("size of super block: %d\n", (int)sizeof(*sb));
   return 0;
 }
