@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS= -Wall -std=c99
-TARGET = lib/fs
+TARGET = fs2
 
 all: $(TARGET).c
 	$(CC) $(CFLAGS) -o $(TARGET) $(TARGET).c

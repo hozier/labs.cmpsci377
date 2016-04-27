@@ -148,6 +148,7 @@ void parse(){
             create(options[1], atoi(options[2]));
             break;
           case 'L':
+            printf("calling ls:\n");
             ls();
             break;
           case 'R':
