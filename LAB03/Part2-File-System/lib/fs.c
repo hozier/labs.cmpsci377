@@ -115,17 +115,25 @@ void ls(){
 // overview: returns a string array of the currently parsed line in input text file
 // excludes new line characters as well as the firstmost line known as 'disk0'
 char ** dictionary(char *str){
-  const char s[2] = " ";
-  char **dictionary = (char **)malloc(sizeof(char)*3);
+  const char s[1] = " ";
+  char **dictionary = (char **)malloc(sizeof(char*)*3);
+  char *token = NULL;
   int i = 0;
 
   /* get the first token */
-  dictionary[i] = strtok(str, s);
+  token = strtok(str, s);
+  dictionary[i] = token;
 
   /* walk through other tokens */
   while( dictionary[i] != NULL ){
     // printf( " %s\n", dictionary[i] ); // debug.
-    dictionary[++i] = strtok(NULL, s);
+    token = strtok(NULL, s);
+    if(token != NULL){ dictionary[++i] = token; }
+    else {
+      char **L = &dictionary[0];
+      free(dictionary);
+      return L;
+    }
   }
   return dictionary;
 }
