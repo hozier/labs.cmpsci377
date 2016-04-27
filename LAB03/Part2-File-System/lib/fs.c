@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdint.h>
 
+// overview: the data structure of the fs
 typedef struct inode inode;
 typedef struct data_block data_block;
 typedef struct super_block super_block;
@@ -19,12 +20,13 @@ struct super_block{
   inode i[16];
 };
 
-// memory allocation routines.
+// overview: memory allocation routine.
 inode *new_inode(){
   inode *new_i = (inode *)malloc(sizeof(inode));
   return new_i;
 }
 
+// overview: memory allocation routine.
 super_block *new_super_block(){
   super_block *s = (super_block *)malloc(sizeof(super_block));
 
@@ -38,6 +40,7 @@ super_block *new_super_block(){
   return s;
 }
 
+// overview: the global super_block variable.
 super_block *sb;
 
 // overview: the fs API.
@@ -46,7 +49,6 @@ create a new file with this name and with these many blocks.
 (We shall assume that the file size is specified at file creation time
 and the file does not grow or shrink from this point on)
 */
-
 void create(char name[8], int32_t size){
   for(int j = 0; j<16; j++){
     if(sb->i[j].used ==0){
@@ -63,7 +65,6 @@ void create(char name[8], int32_t size){
 }
 
 // overview: delete the file with this name.
-
 void delete(char name[8]){
   for(int j=0; j<16;j++){
     if(strcmp(sb->i[j].name, name) == 0 ){
@@ -80,7 +81,6 @@ void delete(char name[8]){
 
 // overview: read the specified block from this file into the specified buffer;
 // blockNum can range from 0 to 7.
-
 void read(char name[8], int32_t blockNum, char buf[1024]){
   for(int j = 0; j<16; j++){
     if(strcmp(sb->i[j].name, name) == 0 ){
@@ -92,7 +92,6 @@ void read(char name[8], int32_t blockNum, char buf[1024]){
 }
 
 // overview: write the data in the buffer to the specified block in this file.
-
 void write(char name[8], int32_t blockNum, char buf[1024]){
   for(int j = 0; j<16; j++){
     if(strcmp(sb->i[j].name, name) == 0 ){
@@ -110,6 +109,7 @@ void ls(){
       printf("%s\n",sb->i[j].name);
     }
   }
+  printf("\n\n");
 }
 
 // overview: returns a string array of the currently parsed line in input text file
@@ -138,6 +138,11 @@ char ** dictionary(char *str){
   return dictionary;
 }
 
+// overview: logs all interactions to disk0
+void debug(char *command, char *name, int32_t blockNum){
+  printf("%s %s using [%d] blocks of memory.\n", command, name, blockNum);
+}
+
 // overview: parse each line of the input file, execute parsed commands
 void parse(){
   FILE *fp = fopen("../resources/lab3Input.txt", "r");
@@ -152,22 +157,32 @@ void parse(){
       // printf("%s", line); // debug
       char command = line[0];
       char **options = dictionary(line); // works! // options for fs API calls.
+
+      // the name of file on disk
+      char *name = options[1];
+
         switch (command){
           case 'C':
-            create(options[1], atoi(options[2]));
+            debug("Created", name, atoi(options[2]));
+            create(name, atoi(options[2]));
             break;
           case 'L':
-            printf("calling ls:\n");
+            // printf("calling ls:\n");
+            debug("\n\nListing", "cwd", 0);
             ls();
             break;
           case 'R':
-            read(options[1],atoi(options[2]), buf);
+            debug("Read", name, atoi(options[2]));
+            read(name,atoi(options[2]), buf);
             break;
           case 'W':
-            write(options[1],atoi(options[2]), buf);
+            debug("Wrote", name, atoi(options[2]));
+            write(name,atoi(options[2]), buf);
             break;
           case 'D':
-            delete(options[1]);
+            name[strlen(name)-1] = '\0';
+            debug("Deleted", name, 0);
+            delete(name);
             break;
           default:
             break;
@@ -179,10 +194,13 @@ void parse(){
 // the main driving method.
 int main(int argc, char const *argv[]) {
   /* code */
+
+  // overview: initialize the new global super block
   sb = new_super_block();
   sb->free_block_list[0] = '1'; // the super block is not free.
   parse();
 
+  // overview: verifying the size of the space on the fs data structure.
   printf("size of super block: %d\n", (int)sizeof(*sb));
   return 0;
 }
