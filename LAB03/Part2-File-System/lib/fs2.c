@@ -56,7 +56,7 @@ void create(char name[8], int32_t size){
       fseek(disk, 0 ,(SEEK_SET+(48*j))); //not a method yet
       fwrite(newFile, 1024, 8, disk);
       sb->i[j].used =1;
-      sb->i[j].name = name;
+      strcpy(sb->i[j].name, name);       // replaced: <====> sb->i[j].name = name;
       break;
     }
   }
@@ -66,12 +66,12 @@ void create(char name[8], int32_t size){
 
 void delete(char name[8]){
   for(int j=0; j<16;j++){
-    if(sb->i[j].name == name){
+    if(strcmp(sb->i[j].name, name) == 0 ){
       FILE *disk = fopen("../resources/disk0", "r+");
       fseek(disk, 0, (SEEK_SET+(48*j)));
       //delete FILE
       for(int k = 0; k<8; k++){
-          sb->i[j].name[k] = "";
+          sb->i[j].name[k] = '\0';
       }
       sb->i[j].used =0;
     }
@@ -83,7 +83,7 @@ void delete(char name[8]){
 
 void read(char name[8], int32_t blockNum, char buf[1024]){
   for(int j = 0; j<16; j++){
-    if(sb->i[j].name == name){
+    if(strcmp(sb->i[j].name, name) == 0 ){
       FILE *disk = fopen("../resources/disk0", "r+");
       fseek(disk, blockNum*1024, (SEEK_SET+(48*j)));
       fread(buf, 1024, 1, disk);
@@ -95,7 +95,7 @@ void read(char name[8], int32_t blockNum, char buf[1024]){
 
 void write(char name[8], int32_t blockNum, char buf[1024]){
   for(int j = 0; j<16; j++){
-    if(sb->i[j].name == name){
+    if(strcmp(sb->i[j].name, name) == 0 ){
       FILE *disk = fopen("../resources/disk0", "r+");
       fseek(disk, blockNum*1024, (SEEK_SET+(48*j)));
       fwrite(buf, 1024, 1, disk);
@@ -148,16 +148,16 @@ void parse(){
             create(options[1], atoi(options[2]));
             break;
           case 'L':
-            ls();
+            // ls();
             break;
           case 'R':
-            read(options[1],atoi(options[2]), NULL);
+            // read(options[1],atoi(options[2]), NULL);
             break;
           case 'W':
-            write(options[1],atoi(options[2]), NULL);
+            // write(options[1],atoi(options[2]), NULL);
             break;
           case 'D':
-            delete(options[1]);
+            // delete(options[1]);
             break;
           default:
             break;

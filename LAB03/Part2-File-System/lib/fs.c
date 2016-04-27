@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <stdint.h>
 
 typedef struct inode inode;
 typedef struct data_block data_block;
@@ -106,7 +105,7 @@ void write(char name[8], int32_t blockNum, char buf[1024]){
 void ls(){
   for(int j = 0; j<16; j++){
     if(sb.i[j].used==1){
-      printf('%s\n',sb.i[j].name);
+      printf('%s'\n,sb.i[j].name);
     }
   }
 }
