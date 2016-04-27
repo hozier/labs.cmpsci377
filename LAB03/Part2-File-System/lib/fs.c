@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 
 typedef struct inode inode;
 typedef struct data_block data_block;
@@ -48,15 +49,14 @@ and the file does not grow or shrink from this point on)
 
 void create(char name[8], int32_t size){
   for(int j = 0; j<16; j++){
-    if(sb.i[j].used ==0){
-      FILE disk = fopen("../resources/disk0", "r+");
+    if(sb->i[j].used ==0){
+      FILE *disk = fopen("../resources/disk0", "r+");
       FILE *newFile = fopen(name, "w");
-      int blockNum = super_block.i[j]
       //somehow limit size of fi
       fseek(disk, 0 ,(SEEK_SET+(48*j))); //not a method yet
-      fwrite(file, 1024, 8, disk);
-      sb.i[j].used =1;
-      sb.i[j].name = name;
+      fwrite(newFile, 1024, 8, disk);
+      sb->i[j].used =1;
+      strcpy(sb->i[j].name, name);       // replaced: <====> sb->i[j].name = name;
       break;
     }
   }
@@ -66,12 +66,14 @@ void create(char name[8], int32_t size){
 
 void delete(char name[8]){
   for(int j=0; j<16;j++){
-    if(sb.i[j].name == name){
+    if(strcmp(sb->i[j].name, name) == 0 ){
       FILE *disk = fopen("../resources/disk0", "r+");
-      fseek(disk, blockNum*1024, (SEEK_SET+(48*j)));
+      fseek(disk, 0, (SEEK_SET+(48*j)));
       //delete FILE
-      sb.i[j].name = "";
-      sb.i[j].used =0;
+      for(int k = 0; k<8; k++){
+          sb->i[j].name[k] = '\0';
+      }
+      sb->i[j].used =0;
     }
   }
 }
@@ -81,9 +83,9 @@ void delete(char name[8]){
 
 void read(char name[8], int32_t blockNum, char buf[1024]){
   for(int j = 0; j<16; j++){
-    if(sb.i[j].name == name){
+    if(strcmp(sb->i[j].name, name) == 0 ){
       FILE *disk = fopen("../resources/disk0", "r+");
-      fseek(disk, blockNum*1024, (SEEK_SET+(48*j));
+      fseek(disk, blockNum*1024, (SEEK_SET+(48*j)));
       fread(buf, 1024, 1, disk);
     }
   }
@@ -93,10 +95,10 @@ void read(char name[8], int32_t blockNum, char buf[1024]){
 
 void write(char name[8], int32_t blockNum, char buf[1024]){
   for(int j = 0; j<16; j++){
-    if(sb.i[j].name == name){
+    if(strcmp(sb->i[j].name, name) == 0 ){
       FILE *disk = fopen("../resources/disk0", "r+");
       fseek(disk, blockNum*1024, (SEEK_SET+(48*j)));
-      fwrite(buf, 1024, 1 disk);
+      fwrite(buf, 1024, 1, disk);
     }
   }
 }
@@ -104,8 +106,8 @@ void write(char name[8], int32_t blockNum, char buf[1024]){
 // overview: list the names of all files in the file system and their sizes.
 void ls(){
   for(int j = 0; j<16; j++){
-    if(sb.i[j].used==1){
-      printf('%s'\n,sb.i[j].name);
+    if(sb->i[j].used==1){
+      printf("%s\n",sb->i[j].name);
     }
   }
 }
@@ -131,11 +133,12 @@ char ** dictionary(char *str){
 // overview: parse each line of the input file, execute parsed commands
 void parse(){
   FILE *fp = fopen("../resources/lab3Input.txt", "r");
-  char * line = NULL;
-  size_t len = 0;
-
-  size_t read;
-  while ((read = getline(&line, &len, fp)) != -1) {
+  char line[20];
+  // size_t len = 0;
+  char buf[1024];
+  // size_t read1;
+  while( fgets (line, 20, fp)!=NULL ){
+  // while ((read1 = getline(&line, &len, fp)) != -1)
     // printf("Retrieved line of length %zu :\n", read); //debug.
     if(line[0] != '\n' && strcmp(line, "disk0") != 0){
       // printf("%s", line); // debug
@@ -146,13 +149,14 @@ void parse(){
             create(options[1], atoi(options[2]));
             break;
           case 'L':
+            printf("calling ls:\n");
             ls();
             break;
           case 'R':
-            read(options[1],atoi(options[2]), NULL);
+            read(options[1],atoi(options[2]), buf);
             break;
           case 'W':
-            write(options[1],atoi(options[2]), NULL);
+            write(options[1],atoi(options[2]), buf);
             break;
           case 'D':
             delete(options[1]);
@@ -167,7 +171,7 @@ void parse(){
 // the main driving method.
 int main(int argc, char const *argv[]) {
   /* code */
-  super_block *sb = new_super_block();
+  sb = new_super_block();
   sb->free_block_list[0] = '1'; // the super block is not free.
   parse();
 
