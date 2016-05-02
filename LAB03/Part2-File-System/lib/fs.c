@@ -43,7 +43,8 @@ super_block *new_super_block(){
 // overview: the global super_block variable.
 super_block *sb;
 
-// overview: the fs API.
+// overview: the file system interface
+// (otherwise known as the fs API.)
 /*
 create a new file with this name and with these many blocks.
 (We shall assume that the file size is specified at file creation time
@@ -118,20 +119,19 @@ void ls(){
 
 // overview: returns a string array of the currently parsed line in input text file
 // excludes new line characters as well as the firstmost line known as 'disk0'
-char ** dictionary(char *str){
-  const char s[1] = " ";
+char ** dictionary(char *str, const char *delim){
   char **dictionary = (char **)malloc(sizeof(char*)*3);
   char *token = NULL;
   int i = 0;
 
   /* get the first token */
-  token = strtok(str, s);
+  token = strtok(str, delim);
   dictionary[i] = token;
 
   /* walk through other tokens */
-  while( dictionary[i] != NULL ){
+  while(1){
     // printf( " %s\n", dictionary[i] ); // debug.
-    token = strtok(NULL, s);
+    token = strtok(NULL, delim);
     if(token != NULL){ dictionary[++i] = token; }
     else {
       char **L = &dictionary[0];
@@ -147,52 +147,47 @@ void debug(char *command, char *name, int32_t blockNum){
   printf("%s %s using [%d] blocks of memory.\n", command, name, blockNum);
 }
 
+// overview: the entry point for calls to the file system interface
+void exec(char **options){
+  // the name of file on disk
+  char buf[1024];
+  char *command = options[0];
+  char *name = options[1];
+  switch (*command){
+    case 'C':
+      create(name, atoi(options[2]));
+      debug("Created", name, atoi(options[2]));
+      break;
+    case 'L':
+      // printf("calling ls:\n");
+      debug("\n\nListing", "cwd", 0);
+      ls();
+      break;
+    case 'R':
+      read(name,atoi(options[2]), buf);
+      debug("Read", name, atoi(options[2]));
+      break;
+    case 'W':
+      write(name,atoi(options[2]), buf);
+      debug("Wrote", name, atoi(options[2]));
+      break;
+    case 'D':
+      name[strlen(name)-1] = '\0';
+      delete(name);
+      debug("Deleted", name, 0);
+      break;
+    default:
+      break;
+  } // end switch.
+}
+
 // overview: parse each line of the input file, execute parsed commands
 void parse(char *path){
   FILE *fp = fopen(path, "r");
   char line[20];
-  // size_t len = 0;
-  char buf[1024];
-  // size_t read1;
-  while( fgets (line, 20, fp)!=NULL ){
-  // while ((read1 = getline(&line, &len, fp)) != -1)
-    // printf("Retrieved line of length %zu :\n", read); //debug.
-    if(line[0] != '\n' && strcmp(line, "disk0") != 0){
-      // printf("%s", line); // debug
-      char command = line[0];
-      char **options = dictionary(line); // works! // options for fs API calls.
 
-      // the name of file on disk
-      char *name = options[1];
-
-        switch (command){
-          case 'C':
-            create(name, atoi(options[2]));
-            debug("Created", name, atoi(options[2]));
-            break;
-          case 'L':
-            // printf("calling ls:\n");
-            debug("\n\nListing", "cwd", 0);
-            ls();
-            break;
-          case 'R':
-            read(name,atoi(options[2]), buf);
-            debug("Read", name, atoi(options[2]));
-            break;
-          case 'W':
-            write(name,atoi(options[2]), buf);
-            debug("Wrote", name, atoi(options[2]));
-            break;
-          case 'D':
-            name[strlen(name)-1] = '\0';
-            delete(name);
-            debug("Deleted", name, 0);
-            break;
-          default:
-            break;
-      } // end switch.
-    }
-  } // end while.
+  while( fgets (line, 20, fp)!=NULL ){ exec(dictionary(line, " "));   } // the engine implemented against the fs API.
+  fclose(fp); // end of fs API usage.
 }
 
 // the main driving method.
@@ -202,7 +197,7 @@ int main(int argc, char const *argv[]) {
   // overview: initialize the new global super block
   sb = new_super_block();
   sb->free_block_list[0] = '1'; // the super block is not free.
-  parse("../resources/lab3Input.txt");
+  parse("../resources/lab3Input.txt"); // run the file system interface
 
   // overview: verifying the size of the space on the fs data structure.
   printf("size of super block: %d\n", (int)sizeof(*sb));
